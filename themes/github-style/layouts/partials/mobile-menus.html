@@ -1,0 +1,27 @@
+
+{{ $projects_section := where .Site.RegularPages "Section" "in" (slice "projects") }}
+{{ $projects_section_count := len $projects_section }}
+
+{{ $blog_section := where .Site.RegularPages "Section" "in" (slice "blog") }}
+{{ $blog_section_count := len $blog_section }}
+
+<div class="UnderlineNav user-profile-nav d-block d-md-none position-sticky top-0 pl-3 ml-n3 mr-n3 pr-3 bg-white"
+  style="z-index:3;">
+  <nav class="UnderlineNav-body">
+    <a class="UnderlineNav-item {{ if .IsHome }} selected {{ end }}" href="{{ .Site.BaseURL }}">
+      Overview
+    </a>
+    <a class="UnderlineNav-item {{ if eq .Section "projects"}} selected projects-nav projects {{ end }}" href="{{ .Site.BaseURL }}projects/">
+      Projects
+      <span class="Counter">{{ $projects_section_count}}</span>
+    </a>
+    <a class="UnderlineNav-item {{ if eq .Section "blog" }} selected {{ end }}{{ if eq .Type " tags" }} selected {{ end }}" href="{{ .Site.BaseURL }}blog/">
+      Blog Posts
+      <span class="Counter">{{ $blog_section_count}}</span>
+    </a>
+    <a class="UnderlineNav-item {{ if eq .Section "about" }} selected {{ end }}" href="{{ .Site.BaseURL }}about/">
+      About
+    </a>
+
+  </nav>
+</div>
