@@ -9,7 +9,7 @@ pygmentsUseClasses = true
     author = "Oluwatobi Ojekanmi"
     description = "Every cloud has a silver lining."
     github = "tobiojekanmi"
-    twitter = "tobiojekanmi"
+    twitter = "0x746F6279"
     linkedin = "tobiojekanmi"
     instagram = "tobiojekanmi"
     email = "oluwatobi.ojekanmi@gmail.com"
@@ -23,6 +23,7 @@ pygmentsUseClasses = true
     avatar = "/images/main/avatar.png"
     location = "Lagos, Nigeria"
     enableGitalk = false
+    katex = true
 
 [params.gitalk]
     clientID = "Your client ID"
