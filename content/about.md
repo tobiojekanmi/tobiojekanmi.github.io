@@ -1,5 +1,6 @@
 ---
-title: About
+title: About Me
+date: 2022-01-10T15:00:00+08:00
 ---
 
 ## **Profile Summary**
@@ -12,6 +13,8 @@ Driven by a curiosity for innovation, Oluwatobi is committed to creating impactf
 
 Let’s connect and explore how AI can transform the future!.
 <br/>
+
+---
 
 ## Skills
 
@@ -42,6 +45,8 @@ Let’s connect and explore how AI can transform the future!.
 - Software Development
 - System Architecture
 - Distributed Systems
+
+---
 
 ## **Work Experience**
 
@@ -103,6 +108,8 @@ Some of my achievements in this role include:
 - Developed dashboards that enhanced vaccination resource availability, leading to a 5% reduction in cancellation of immunization delivery plans.
 - Built dashboards that enabled efficient tracking of COVID-19 incidence and treatment rates, improving patient care by reducing response times.
   <br/>
+
+---
 
 ## **Education**
 
