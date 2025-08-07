@@ -1,46 +1,117 @@
-baseURL = "https://tobiojekanmi.github.io/"
+baseURL = "https://tobiojekanmi.github.io"
 languageCode = "en-us"
-title = "Oluwatobi's Logbook"
-theme = "github-style"
-pygmentsCodeFences = true
-pygmentsUseClasses = true
+title = "Oluwatobi's Blog"
+enableRobotsTXT = true
+theme = "eccentric"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+page = ["HTML", "RSS"]
+
+[pagination]
+pagerSize = 10
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[Menus]
+[[Menus.main]]
+identifier = "blog"
+name = "Blog"
+title = "Blog Posts"
+url = "/blog"
+weight = 1
+
+[[Menus.main]]
+identifier = "projects"
+name = "Projects"
+title = "Projects"
+url = "/projects"
+weight = 2
+
+[[Menus.main]]
+identifier = "about"
+name = "About"
+title = "About"
+url = "/about"
+weight = 3
 
 [params]
-    author = "Oluwatobi Ojekanmi"
-    description = "Every cloud has a silver lining."
-    github = "tobiojekanmi"
-    twitter = "0x746F6279"
-    linkedin = "tobiojekanmi"
-    instagram = "tobiojekanmi"
-    email = "oluwatobi.ojekanmi@gmail.com"
-    url = "https://tobiojekanmi.github.io"
-    keywords = "blog, google analytics"
-    rss = true
-    lastmod = true
-    userStatusEmoji = "😀"
-    favicon = "/images/main/favicon.ico"
-    headerIcon = "/images/main/favicon.ico"
-    avatar = "/images/main/avatar.png"
-    location = "Lagos, Nigeria"
-    enableGitalk = false
-    katex = true
+title = "Oluwatobi's Blog"
+description = "Artificial Intelligence & Software Engineering"
+favicon = "/images/favicon.ico"
+mathjax = true
+animate = true
+enableReadingTime = true
 
-[params.gitalk]
-    clientID = "Your client ID"
-    clientSecret = "Your client secret"
-    repo = "repo"
-    owner = "tobiojekanmi"
-    admin = "tobiojekanmi"
-    id = "location.pathname"
-    labels = "gitalk"
-    perPage = 15
-    pagerDirection = "last"
-    createIssueManually = true
-    distractionFreeMode = false
 
-[frontmatter]
-    lastmod = ["lastmod", ":fileModTime", ":default"]
+[taxonomies]
+"blog/tag" = "blog/tags"
+"blog/category" = "blog/categories"
+"projects/tag" = "projects/tags"
+"projects/category" = "projects/categories"
 
-[services]
-    [services.googleAnalytics]
-        ID = "UA-123456-789"
+
+[params.author]
+avatar = "images/avatar.png"
+name = "Oluwatobi Ojekanmi"
+bio = """Hi ✋, I'm Tobi — an AI Engineer with 3+ years of experience in Computer Vision, Natural Language Processing, and Robotics. 
+    I build intelligent physical and non-physical decision-making systems that solve real-world problems using cutting-edge deep 
+    learning, and reinforcement learning algorithms.
+    """
+
+[[params.author.socialLinks.fontAwesomeIcons]]
+icon = "fa fa-envelope"
+url = "mailto:oluwatobi.ojekanmi@gmail.com"
+
+[[params.author.socialLinks.fontAwesomeIcons]]
+icon = "fab fa-github"
+url = "https://github.com/tobiojekanmi"
+
+[[params.author.socialLinks.fontAwesomeIcons]]
+icon = "fab fa-linkedin"
+url = "https://linkedin.com/in/tobiojekanmi"
+
+[[params.author.socialLinks.fontAwesomeIcons]]
+icon = "fab fa-x-twitter"
+url = "https://x.com/tobiojekanmi"
+
+[[params.author.socialLinks.fontAwesomeIcons]]
+icon = "fab fa-threads"
+url = "https://threads.com/tobiojekanmi"
+
+# [[params.author.socialLinks.fontAwesomeIcons]]
+# icon = "fab fa-medium"
+# url = "https://medium.com/@tobiojekanmi"
+
+# [[params.author.socialLinks.customIcons]]
+# icon = "/images/favicon.ico"
+# url = "https://tobiojekanmi.github.io"
+
+
+[params.font]
+fontSize = "1rem"
+fontWeight = 400
+lineHeight = 1.5
+textAlign = "left"
+
+[params.navbar]
+align = "ms-auto"
+
+[params.navbar.stickyNavBar]
+enable = true
+showOnScrollUp = true
+
+[params.color]
+textColor = "#131943"
+secondaryTextColor = "#131943"
+backgroundColor = "#F5F5F5"
+primaryColor = "#131943"
+secondaryColor = "#dededeff"
+
+[params.color.darkmode]
+textColor = "#fff1f1"
+secondaryTextColor = "#fff1f1"
+backgroundColor = "#11121aff"
+primaryColor = "#fff1f1"
+secondaryColor = "#2b2f34ff"
