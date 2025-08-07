@@ -1,0 +1,180 @@
+{{ define "head" }}
+<meta name="description" content="{{ .Params.description }}">
+<link rel="stylesheet" href="/css/single.css">
+
+<!-- fontawesome -->
+<script defer src="/fontawesome-6/all-6.4.2.js"></script>
+{{ end }}
+
+{{ define "title" }}
+{{.Title }} | {{ .Site.Title }}
+{{ end }}
+
+{{ define "main" }}
+<section id="single">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-12 col-lg-3">
+
+        <!-- Static TOC for medium and larger screens -->
+        <div id="stickySideBar" class="sticky-sidebar">
+          {{ if .Params.toc | default true}}
+                <aside class="toc toc-desktop toc-content d-none d-md-block">
+                    <h5 class="d-none d-md-block">
+                        {{ .Site.Params.terms.toc | default "Table Of Contents" }}
+                    </h5>
+                    <div class="toc-content d-none d-md-block">
+                        {{ .TableOfContents }}
+                    </div>
+                </aside>
+          {{ end }}
+        </div>
+      </div>
+      
+
+      <!-- Content -->
+      <div class="col-sm-12 col-md-12 col-lg-9">
+        <div class="pr-lg-4">
+          <div class="title mb-3">
+            
+            <h1 class="text-left mb-4">{{ .Title }}</h1>
+            <small class="text-left">
+                Date: {{ .Date.Format "January 2, 2006" }}
+                {{ if or (.Site.Params.singlePages.readTime.enable | default true) (.Params.enableReadingTime) }}
+                | Estimated Reading Time: {{ .ReadingTime }} mins
+                {{ end }}
+                {{ if .Params.author }}
+                | Author: {{ with .Params.author }}{{ . }}{{ else }}{{ .Site.Params.author.name }}{{ end }}
+                {{ end }}
+                <br>
+                <span>Categories: </span>{{ if .Params.categories }}
+                  {{ range $index, $category := .Params.categories }}
+                    {{ if $index }}| {{ end }}
+                    <a href="{{ "/projects/categories/" | relLangURL }}{{ $category | urlize }}" style="text-decoration: none; color: var(--text-color);">{{ $category}}</a>
+                  {{ end }}
+                {{ end }}
+              </small>
+
+            <div style="border-bottom: 1px solid var(--secondary-color); padding-bottom: .7rem;"></div>
+          </div>          
+            
+          <!-- Mobile TOC -->
+          {{ if .Params.toc | default true }}
+            <aside class="toc toc-mobile d-block d-md-none toc-details">
+            <details>
+                <summary class="fw-bold">
+                {{ .Site.Params.terms.toc | default "Table Of Contents" }}
+                </summary>
+                <div class="toc-content mt-2">
+                {{ .TableOfContents }}
+                </div>
+            </details>
+            </aside>
+          {{ end }}
+
+        <!-- Content -->
+          <article class="page-content  p-2">
+          {{ .Content | emojify }}
+          </article>
+
+          <!-- Tags -->
+          <div style="border-bottom: 1px solid var(--secondary-color); margin-bottom: .7rem;"></div>
+           {{ if .Params.tags }}
+            <aside class="tags">
+                <h5>{{ .Site.Params.terms.tags | default "Tags: " }}</h5>
+                <ul class="tags-ul list-unstyled list-inline">
+                {{range .Params.tags}}
+                <li class="list-inline-item"><a href="{{`projects/tags` | absURL}}/{{.| urlize}}"
+                    {{ if site.Params.singlePages.tags.openInNewTab | default true }}target="_blank"{{ end }}
+                >{{.}}</a></li>
+                {{end}}
+                </ul>
+            </aside>
+            {{end}}
+
+        <!-- Social Share -->
+          {{ if .Params.socialShare | default .Site.Params.singlePages.socialShare | default true }}
+          <aside class="social">
+            <h5>{{ .Site.Params.terms.social | default "Share Post:" }}</h5>
+            <div class="social-content">
+              <ul class="list-inline">
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ .Site.Params.hostName }}{{ .Permalink | absURL }}">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Site.Params.hostName }}{{ .Permalink | absURL }}">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://api.whatsapp.com/send?text={{ .Title }}: {{ .Site.Params.hostName }}{{ .Permalink | absURL }}">
+                    <i class="fab fa-whatsapp"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href='mailto:?subject={{ .Title }}&amp;body={{ .Site.Params.terms.emailText | default "Check out this site" }} {{ .Site.Params.hostName }}{{ .Permalink | absURL }}'>
+                    <i class="fa fa-envelope"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          {{ end }}
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 p-4">
+        {{ template "_internal/disqus.html" . }}
+      </div>
+    </div>
+  </div>
+  <button class="p-2 px-3" onclick="topFunction()" id="topScroll">
+    <i class="fas fa-angle-up"></i>
+  </button>
+</section>
+
+{{ if or (.Site.Params.singlePages.scrollprogress.enable | default true) (.Params.enableScrollProgress) }}
+<div class="progress">
+  <div id="scroll-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<Script src="/js/scrollProgressBar.js"></script>
+{{ end }}
+
+<script>
+  var topScroll = document.getElementById("topScroll");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topScroll.style.display = "block";
+    } else {
+      topScroll.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  // To set height of sticky sidebar dynamically
+  let stickySideBarElem = document.getElementById("stickySideBar");
+  let stickyNavBar = {{ .Site.Params.navbar.stickyNavBar.enable | default false }};
+  if(stickyNavBar) {
+    let headerElem = document.getElementById("profileHeader");
+    let headerHeight = headerElem.offsetHeight + 15;
+    stickySideBarElem.style.top = headerHeight + "px";
+  } else {
+    stickySideBarElem.style.top = "50px";
+  }
+</script>
+
+{{ if or (.Site.Params.singlePages.readTime.enable | default true) (.Params.enableReadingTime) }}
+<script src="/js/readingTime.js"></script>
+{{end}}
+
+{{ end }}

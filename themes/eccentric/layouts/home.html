@@ -1,0 +1,31 @@
+{{ define "head" }}
+<meta name="description" content={{ .Site.Params.description }}>
+<link rel="stylesheet" href="/css/index.css" media="all">
+<link rel="stylesheet" href="/css/projects.css" media="all">
+<link rel="stylesheet" href="/css/list.css" media="all">
+
+<!-- fontawesome -->
+<script defer src="/fontawesome-6/all-6.4.2.js"></script>
+{{ end }}
+
+{{ define "title" }}
+{{ .Site.Title }}
+{{ end }}
+
+{{ define "main" }}
+
+<div class="container">
+  <div class="row justify-content-center"> 
+    <div class="col-sm-12 col-md-12 col-lg-4">
+      <div id="sidebar" class="sticky-sidebar">
+        {{- partial "home/about.html" . -}}
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-8"> 
+      {{- partial "home/blog.html" . -}}
+      {{- partial "home/projects.html" . -}}
+    </div>
+  </div>
+</div>
+
+{{ end }}

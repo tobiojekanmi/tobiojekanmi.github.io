@@ -1,0 +1,60 @@
+{{ define "head" }}
+  {{ if eq .Data.Plural "categories" }}
+    <meta name="description" content="Blog posts under the category '{{ .Title }}' on {{ .Site.Title }}">
+  {{ else if eq .Data.Plural "tags" }}
+    <meta name="description" content="Blog posts tagged with '{{ .Title }}' on {{ .Site.Title }}">
+  {{ else }}
+    <meta name="description" content="Blog Posts - {{ .Title }} of {{ .Site.Title }}">
+  {{ end }}
+  <link rel="stylesheet" href="/css/list.css" media="all">
+{{ end }}
+
+{{ define "title" }}
+  {{ if eq .Data.Plural "categories" }}
+    Blog Category - {{ .Title }} | {{ .Site.Title }}
+  {{ else if eq .Data.Plural "tags" }}
+    Blog Tag - {{ .Title }} | {{ .Site.Title }}
+  {{ else }}
+    {{ .Title }} | {{ .Site.Title }}
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+<div class="container">
+  <div class="row justify-content-center"> 
+    <!-- Left Sidebar: Categories and Tags -->
+    {{- partial "blog/section-sidebar.html" . -}}
+
+    <!-- Right Sidebar: Paginated Posts -->
+    <div class="col-sm-12 col-md-12 col-lg-8"> 
+      <div class="container pt-5" id="list-page">
+        {{ if eq .Data.Plural "categories" }}
+          <h3 class="text-left pb-4">Blog Category - {{ .Title }}</h3>
+        {{ else if eq .Data.Plural "tags" }}
+          <h3 class="text-left pb-4">Blog Tag - {{ .Title }}</h3>
+        {{ else }}
+          <h3 class="text-left pb-4">Blog Posts - {{ .Title }}</h3>
+        {{ end }}
+
+        {{ range .Paginator.Pages }}
+        <div class="blog-item">
+            <h5><a href="{{ .Permalink }}">{{ .Title }}</a></h5>
+            <p class="text-muted mb-2">{{ .Params.summary | truncate 200 }}</p>
+            <small class="text-muted">
+                {{ .Date.Format "January 2, 2006" }} |
+                Estimated Reading Time: {{ .ReadingTime }} min |
+                Author: {{ with .Params.author }}{{ . }}{{ else }}{{ .Site.Params.author.name }}{{ end }}
+            </small>
+        </div>
+        {{ end }}
+
+        <div class="row justify-content-center">
+            <div class="col-auto m-3">
+                {{ template "_internal/pagination.html" . }}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

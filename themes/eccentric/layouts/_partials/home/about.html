@@ -1,0 +1,48 @@
+<section id="hero" class="py-5 text-center">
+  <div class="container px-3 px-sm-5 px-md-5 px-lg-5 pt-lg-3">
+
+    <!-- Avatar -->
+    <div class="image {{ if .Site.Params.animate }}animate{{ end }}">
+      <img src="{{ .Site.Params.author.avatar }}"
+           class="img-thumbnail mx-auto{{ if .Site.Params.hero.roundImage }} rounded-circle{{ end }}"
+           alt=""
+           style="max-width: 200px;">
+    </div>
+
+    <!-- Name & Bio -->
+    <div class="content mt-4 {{ if .Site.Params.animate }}animate{{ end }}" id="primary-font">
+      <h3 class="fw-bold">{{ .Site.Params.author.name }}</h3>
+      <p class="hero-content mt-3">
+        {{ .Site.Params.author.bio | markdownify }}
+      </p>
+    </div>
+    
+    <!-- Social Media Links -->
+    <div class="social-links mt-4">
+        <span>
+            {{ range .Site.Params.author.socialLinks.fontAwesomeIcons }}
+            <span class="px-1">
+                <a href="{{ .url }}"
+                    {{ if not (hasPrefix .url "#") }} target="_blank" {{ end }}
+                    class="btn social-icon"
+                >
+                    <i class="{{ .icon }}"></i>
+                </a>
+            </span>
+            {{ end }}
+
+            {{ range .Site.Params.author.socialLinks.customIcons }}
+            <span class="px-1">
+                <a href="{{ .url }}"
+                    {{ if not (hasPrefix .url "#") }} target="_blank" {{ end }}
+                    class="btn social-icon"
+                >
+                    <img src="{{ .icon }}">
+                </a>
+            </span>
+            {{ end }}
+        </span>
+    </div>
+
+  </div>
+</section>
