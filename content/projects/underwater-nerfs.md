@@ -4,8 +4,10 @@ date: 2024-07-22T18:46:47+08:00
 draft: false
 math: true
 summary: "This project investigates the application of Neural Radiance Fields (NeRFs) for restoring and representing high-fidelity underwater scenes."
-tags:
-  - Robotics
+categories:
+  - Computer Vision
+  - Deep Learning
+projects/categories:
   - Computer Vision
   - Deep Learning
 ---
