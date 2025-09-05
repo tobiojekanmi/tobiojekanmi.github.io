@@ -204,6 +204,7 @@
 /*TOC*/
 #single aside.toc {
   background-color: var(--background-color);
+  border-right: 1px solid var(--secondary-color);
   padding: .7rem 1rem;
   max-height: 85vh;
   overflow: scroll;

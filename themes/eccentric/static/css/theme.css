@@ -37,8 +37,8 @@
 
 button#theme-toggle {
     border: none;
-    font-size: 26px;
-    margin: auto 4px;
+    font-size: 22px;
+    margin: auto 1px;
 }
 
 body.dark #moon {

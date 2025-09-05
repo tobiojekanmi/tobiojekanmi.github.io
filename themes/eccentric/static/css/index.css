@@ -68,68 +68,69 @@ header .navbar.animate {
     visibility: hidden !important;
 }
 
-/* hero */
+/* profile */
 
-#hero {
+#profile {
     min-height: 100vh;
     line-height: 2rem;
     max-width: 100%;
 }
-#hero .content.animate {
+#profile .content.animate {
     animation: fade-left 1s ease-out;
 }
 
-#hero .hero-bottom-svg {
+#profile .profile-bottom-svg {
     opacity: 0.5;
     position: absolute;
     bottom: -50px;
     left: -150px;
 }
 
-#hero .subtitle {
+#profile .subtitle {
     font-size: clamp(14px,5vw,16px);
     opacity: 0.6;
 }
 
-#hero h1 {
+#profile h1 {
     font-size: clamp(40px, 8vw, 80px);
     color: var(--primary-color) !important;
 }
 
-#hero h2 {
+#profile h2 {
     font-size: clamp(40px, 8vw, 60px);
     opacity: 0.5;
 }
 
-#hero p {
+#profile p {
     margin: 20px 0px 0px;
     max-width: 640px;
     opacity: 0.8;
+    /* text-align: center; */
 }
 
-#hero .image img {
+#profile .image img {
     box-shadow:0px 8px 56px rgba(15, 80, 100, 0.16);
     padding: 0;
     border: 3px solid var(--secondary-color);
     border-radius: 1rem;
 }
 
-#hero .image.animate img {
+#profile .image.animate img {
     animation: fade-in 1s ease-out;
     transition: box-shadow 0.3s;
 }
 
-#hero .image img:hover {
+#profile .image img:hover {
     cursor: pointer;
 }
 
-#hero .image.animate img:hover {
+#profile .image.animate img:hover {
     box-shadow: 0 0 11px rgb(15 80 100 / 20%);
     filter: contrast(1.2);
     cursor: pointer;
 }
 
-#hero a.btn.social-icon {
+#profile a.btn.social-icon {
     color: var(--primary-color) !important;
     line-height: 0%;
     border-radius: 50%;
@@ -139,15 +140,15 @@ header .navbar.animate {
     transition: none;
 }
 
-#hero a.btn.social-icon img {
+#profile a.btn.social-icon img {
     width: 1em;
 }
 
-#hero a.btn.social-icon:hover {
+#profile a.btn.social-icon:hover {
     opacity: 0.8;
 }
 
-#hero a.btn {
+#profile a.btn {
     margin-top: 50px;
     padding: 0.7rem 1.75rem;
     border: 1px solid var(--primary-color);
@@ -156,28 +157,28 @@ header .navbar.animate {
     transition: none;
 }
 
-#hero a.btn:focus {
+#profile a.btn:focus {
     box-shadow: none;
 }
 
-#hero a.btn:hover {
+#profile a.btn:hover {
     background-color: var(--secondary-color) !important;
     color: var(--text-color) !important;
     opacity: 0.9;
 }
 
-#hero a.btn.social-icon:hover {
+#profile a.btn.social-icon:hover {
     background-color: var(--background-color) !important;
     opacity: 0.7;
 }
 
-#hero .hero-content > a {
+#profile .profile-content > a {
     display: inline-block;
     text-decoration: none;
     color: var(--text-link-color) !important;
 }
 
-#hero .hero-content > a::after {
+#profile .profile-content > a::after {
     content: "";
     display: block;
     width: 0px;
@@ -188,75 +189,7 @@ header .navbar.animate {
     opacity: 0.5;
 }
 
-#hero .hero-content > a:hover::after, #hero .hero-content > a:focus::after, #hero .hero-content > a:active::after {
-    width: 100%;
-}
-
-
-
-/* about me */
-#about h3 {
-    color: var(--text-secondary-color) !important;
-}
-
-#about .image img {
-    box-shadow: 0px 8px 56px rgba(15, 80, 100, 0.16);
-    transition: box-shadow 0.3s;
-    padding: 0;
-    border: 0;
-}
-
-#about .image img:hover {
-    box-shadow: 0 0 11px rgb(15 80 100 / 20%);
-}
-
-#about ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    gap: 0px 10px;
-    padding: 0px;
-    margin: 20px 0px 0px;
-    overflow: hidden;
-    list-style: none;
-}
-
-#about ul li {
-    position: relative;
-    margin-bottom: 10px;
-    padding-left: 20px;
-}
-
-#about ul li::before {
-    content: "▹";
-    color: var(--primary-color);
-    position: absolute;
-    left: 0px;
-}
-
-#about .content {
-    font-weight: 500;
-    opacity: 0.9 !important;
-    line-height: 1.7rem !important;
-}
-
-#about a {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--text-link-color) !important;
-}
-
-#about a::after {
-    content: "";
-    display: block;
-    width: 0px;
-    height: 2px;
-    bottom: 0.37em;
-    background-color: var(--primary-color);
-    transition: all 0.25s cubic-bezier(0.645,0.045,0.355,1);
-    opacity: 0.5;
-}
-
-#about a:hover::after, #about a:focus::after, #about a:active::after {
+#profile .profile-content > a:hover::after, #profile .profile-content > a:focus::after, #profile .profile-content > a:active::after {
     width: 100%;
 }
 
@@ -264,5 +197,5 @@ header .navbar.animate {
 .sticky-sidebar {
   position: sticky;
   top: 1rem;
-  z-index: 100;
+  z-index: 10;
 }
