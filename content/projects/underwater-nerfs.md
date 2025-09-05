@@ -12,13 +12,9 @@ projects/categories:
   - Deep Learning
 ---
 
-# **Neural Radiance Fields for High-fidelity Underwater Scene Reconstruction**
-
-#### Code: [https://github.com/tobiojekanmi](https://github.com/tobiojekanmi)
-
-#### Reconstructed Renderings: [https://youtu.be/P1rZwGtxHZw/](https://youtu.be/P1rZwGtxHZw/)
-
-#### Full Project Report: [https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/](https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/)
+**Code:** [https://github.com/tobiojekanmi](https://github.com/tobiojekanmi) \
+**Reconstructed Renderings:** [https://youtu.be/P1rZwGtxHZw/](https://youtu.be/P1rZwGtxHZw/) \
+**Full Project Report:** [https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/](https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/)
 
 ---
 
@@ -35,19 +31,13 @@ We propose new volume rendering equations and neural field architecture to repre
 The final rendering equations proposed are:
 
 $$
-J(r) = \int_{t_n}^{t_f} T_o(t)\sigma_o(t)c_o(t, d)dt
-$$
-
-$$
-D(r) = \int_{t_n}^{t_f} T_o(t)T_d(t)\sigma_o(t)c_o(t, d)dt
-$$
-
-$$
-B(r) = \int_{t_n}^{t_f} T_o(t)(1 -T_b(t))\sigma_o(t)B^\infty_c(t)dt + \left(1 - \int_{t_n}^{t_f} T_o(t)\sigma_o(t)dt \right) B^\infty_c(t)
-$$
-
-$$
-I(r) = D(r) + B(r)
+\begin{aligned}
+J(r) &= \int_{t_n}^{t_f} T_o(t)\sigma_o(t)c_o(t, d)dt \\\\
+D(r) &= \int_{t_n}^{t_f} T_o(t)T_d(t)\sigma_o(t)c_o(t, d)dt \\\\
+B(r) &= \int_{t_n}^{t_f} T_o(t)(1 -T_b(t))\sigma_o(t)B^\infty_c(t)dt \\\\
+     &+ \left(1 - \int_{t_n}^{t_f} T_o(t)\sigma_o(t)dt \right) B^\infty_c(t) \\\\
+I(r) &= D(r) + B(r)
+\end{aligned}
 $$
 
 Where, $I(r)$ represents the underwater scene image captured by the camera; $B^\infty$ is the veiling light or backscatter at infinity; $J$ indicates the actual unattenuated signal transmitted that would have been captured if there were no water medium effects; $D$ is the direct signal transmitted; $\sigma_o$ is the object's volume density; $B$ denotes the backscattered signal transmitted; $\beta_D$ is the light attenuation coefficient; and $\beta_B$ is the backscattering coefficient.
