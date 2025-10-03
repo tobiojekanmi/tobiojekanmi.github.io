@@ -12,19 +12,17 @@ projects/categories:
   - Deep Learning
 ---
 
-**Code:** [https://github.com/tobiojekanmi](https://github.com/tobiojekanmi) \
-**Reconstructed Renderings:** [https://youtu.be/P1rZwGtxHZw/](https://youtu.be/P1rZwGtxHZw/) \
-**Full Project Report:** [https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/](https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/)
+Code: [https://github.com/tobiojekanmi](https://github.com/tobiojekanmi) \
+Reconstructed Renderings: [https://youtu.be/P1rZwGtxHZw/](https://youtu.be/P1rZwGtxHZw/) \
+Full Project Report: [https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/](https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/)
 
 ---
 
-<br>
-
-## **1. Project Overview**
+## 1. Project Overview
 
 This project investigates the application of Neural Radiance Fields (NeRFs) for restoring and representing high-fidelity underwater scenes. Underwater visual imaging often suffers from degradation due to various factors, with light attenuation and backscattering being the most significant. These degradation effects are functions of observation distances, making it challenging to consistently capture high-quality underwater images. Additionally, inconsistent images obscure relevant information, complicating analysis and high-fidelity reconstructions. Hence, this project aimed to estimate the degradation in an underwater image while training a NeRF model on the scene images. This would allow us to obtain a NeRF model that depicts the scene without water medium effects.
 
-## **2. Contributions and Method**
+## 2. Contributions and Method
 
 We propose new volume rendering equations and neural field architecture to represent underwater scenes in this project. Our proposed method integrates a physics-based image restoration model (SeaThru) into the standard NeRF volume rendering equations. This simplifies the reconstruction problem to be a combination of multi-view object radiance estimation and color restoration. Consequently, by combining these rendering equations with our proposed NeRF architecture, we were able to obtain high-fidelity ‘Restored Underwater Scene Models’ which depict the actual scenes without the water degradation effects on the images observed, and the ‘Original Underwater Scene Models’ which represent the scenes and its water medium effects.
 
@@ -46,11 +44,11 @@ Additionally, we proposed a new NeRF architecture to account for the additional 
 
 ![Proposed Model Architecture](/images/projects/underwater-nerfs/model-architecture.png)
 
-## **3. Results**
+## 3. Results
 
 Our proposed method represents both shallow and deep-water environments with constant illumination and does not require pseudo-ground truth restored images to obtain the ‘Restored Underwater Scene Model’. It also outperforms other benchmarked methods qualitatively and quantitatively in most compared metrics and datasets. This validates its potential as a good representation technique for reconstructing underwater scenes.
 
-### **3.1. Synthesized Eiffel Tower Actual Scene Images**
+### 3.1. Synthesized Eiffel Tower Actual Scene Images
 
 <img src="static/images/projects/underwater-nerfs/2015/2015_gt_rgb_20150419T042408.000Z.jpg" />
 
@@ -62,22 +60,22 @@ Our proposed method represents both shallow and deep-water environments with con
 | :-----------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
 |                                               _SeaThru-NeRF Restored Image_                                               |                                            _Our Method's Restored Image_                                             |
 
-### **3.2. Quantitative Evaluation — Peak Signal-to-Noise Ratio (PSNR) $\uparrow$**
+### 3.2. Quantitative Evaluation — Peak Signal-to-Noise Ratio (PSNR) $\uparrow$
 
-| &nbsp;            | &nbsp; | Nerfacto | SeaThru-NeRF | **Our Method** |
+| &nbsp;            | &nbsp; | Nerfacto | SeaThru-NeRF | Our Method |
 | ----------------- | ------ | -------- | ------------ | -------------- |
-| Curasao           | &nbsp; | 16.41    | 38.03        | **39.70**      |
-| IUI3 RedSea       | &nbsp; | 15.99    | 37.56        | **39.56**      |
-| Japanese Gardens  | &nbsp; | 18.62    | 39.79        | **40.16**      |
-| Panama            | &nbsp; | 17.86    | 38.87        | **39.48**      |
-| Eiffel Tower 2015 | &nbsp; | 14.71    | 19.31        | **23.95**      |
-| Eiffel Tower 2016 | &nbsp; | 15.28    | 18.85        | **18.95**      |
-| Eiffel Tower 2018 | &nbsp; | 14.85    | 18.47        | **18.67**      |
-| Eiffel Tower 2020 | &nbsp; | 15.01    | 20.62        | **24.48**      |
+| Curasao           | &nbsp; | 16.41    | 38.03        | 39.70      |
+| IUI3 RedSea       | &nbsp; | 15.99    | 37.56        | 39.56      |
+| Japanese Gardens  | &nbsp; | 18.62    | 39.79        | 40.16      |
+| Panama            | &nbsp; | 17.86    | 38.87        | 39.48      |
+| Eiffel Tower 2015 | &nbsp; | 14.71    | 19.31        | 23.95      |
+| Eiffel Tower 2016 | &nbsp; | 15.28    | 18.85        | 18.95      |
+| Eiffel Tower 2018 | &nbsp; | 14.85    | 18.47        | 18.67      |
+| Eiffel Tower 2020 | &nbsp; | 15.01    | 20.62        | 24.48      |
 
 Both the qualitative and quantitative evaluation results show that our method is consistently better than other relevant methods.
 
-## **4. Running this code**
+## 4. Running this code
 
 For this project, we used two datasets: Eiffel Tower and SeaThru-NeRF datasets. And for the implementation, we used the [Nerfstudio](https://nerf.studio) API. Hence, both dependencies are required.
 
@@ -90,7 +88,7 @@ For this project, we used two datasets: Eiffel Tower and SeaThru-NeRF datasets. 
 
 To run this code on your dataset, prepare your COLMAP data similarly to the approaches highlighted in the `scripts/datasetup_eiffel.sh` script. If you do not have a COLMAP model for your data, you can explore additional approaches provided in the [Nerfstudio](https://nerf.studio) API documentation and modify the Dataparser and Datamanager instances in the `experiments/v0/configs/base_configs.py` script to account for the respective data loading changes.
 
-## **5. Citation**
+## 5. Citation
 
 If you find this work useful for your research, please consider citing this work:
 
