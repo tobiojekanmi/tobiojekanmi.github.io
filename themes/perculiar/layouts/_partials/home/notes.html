@@ -1,0 +1,16 @@
+<div id="list-page" class="pt-5">
+    <h1 class="text-left pb-3">Recent Notes</h1>
+
+    {{ $notesSection := .Site.GetPage "section" "notes" }}
+    {{ $subsections := sort $notesSection.Sections "Title" "asc" }}
+
+    {{ range $subsections }}
+    <div class="section-item">
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+    </div>
+    {{ end }}
+
+    <div class="view-more mt-4">
+        <a href="/notes" class="btn btn-outline-secondary">View More Notes...</a>
+    </div>
+</div>

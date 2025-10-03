@@ -1,0 +1,62 @@
+{{ define "head" }}
+  <meta name="description" content="{{ title .Section }} {{ .Title }} | {{ .Site.Title }}">
+  <link rel="stylesheet" href="/css/list.css" media="all">
+{{ end }}
+
+{{ define "title" }}
+  {{ title .Section }} {{ .Title }} | {{ .Site.Title }}
+{{ end }}
+
+{{ define "main" }}
+  <div class="row justify-content-center"> 
+    <div class="col-sm-12 col-md-12 col-lg-8"> 
+
+      {{ partial "breadcrumbs.html" . }}
+
+      <div class="pt-5" id="list-page">
+        <h1 class="text-left pb-2">{{ title .Section }} {{ .Title }} </h1>
+
+        {{/* --- Collect taxonomy counts for this section --- */}}
+        {{- $section := .Section -}}
+        {{- $taxonomyType := .Data.Plural -}}
+        {{- $taxonomyCounts := dict -}}
+
+        {{ range .Site.Pages }}
+          {{ if eq .Section $section }}
+            {{ with index .Params $taxonomyType }}
+              {{ range . }}
+                {{ $count := index $taxonomyCounts . | default 0 }}
+                {{ $taxonomyCounts = merge $taxonomyCounts (dict . (add $count 1)) }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
+        <!-- Taxonomy Listing -->
+        <div class="row">
+          {{ range $term, $count := $taxonomyCounts }}
+            <div class="col-lg-4 col-md-6 my-3">
+              <div class="card h-100">
+                <a href="/{{ $taxonomyType }}/{{ urlize $term }}/" class="primary-font">
+                  <div class="card-body bg-transparent p-4 shadow-sm">
+                    <h5 class="card-title" title="{{ $term }}">
+                      {{ $term }} ({{ $count }})
+                    </h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+
+        <!-- Pagination -->
+        <div class="row justify-content-center">
+          <div class="col-auto m-3">
+            {{ partial "section/footer/pagination.html" . }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{{ end }}

@@ -1,0 +1,60 @@
+{{ define "head" }}
+<meta name="description" content="{{ .Title }} of {{ .Site.Title }}">
+<link rel="stylesheet" href="/css/list.css" media="all">
+{{ end }}
+
+{{ define "title" }}
+{{ .Title }} | {{ .Site.Title }}
+{{ end }}
+
+{{ define "main" }}
+<div class="row justify-content-center gx-5"> 
+  <div class="col-sm-12 col-md-12 col-lg-8">   
+    
+    <!-- Breadcrumbs -->
+    {{ partial "breadcrumbs.html" . }}
+    
+    <!-- Content -->
+    <div class="pt-3" id="list-page">
+      <h1 class="text-left pb-3">{{ .Title }}</h1>
+      
+      {{ if .Params.rootpage }}
+        <!-- Redirect to rootpage if defined in _index.md -->
+        <meta http-equiv="refresh" content="0; url={{ .Site.BaseURL }}{{ .Params.rootpage }}" />
+        <link rel="canonical" href="{{ .Site.BaseURL }}{{ .Params.rootpage }}" />
+      {{ else }}
+        {{ $regularPages := where .Pages "Kind" "page" }}
+        {{ $sections := where .Pages "Kind" "section" }}
+        
+        {{ if gt (len $sections) 0 }}
+          <!-- Case 1: Section contains subsections (notes) -->
+          {{ $paginator := .Paginate ($sections.ByWeight) }}
+          {{ range $paginator.Pages }}
+            <div class="section-item">
+              <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </div>
+          {{ else }}
+            <p>No subsections found.</p>
+          {{ end }}
+        {{ else if gt (len $regularPages) 0 }}
+          <!-- Case 2: Section contains regular pages (posts) -->
+          {{ range .Paginator.Pages }}
+            <div class="section-item">
+              <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </div>
+          {{ end }}
+        {{ else }}
+          <p>No content found.</p>
+        {{ end }}
+        
+        <!-- Pagination controls -->
+        <div class="row justify-content-center">
+          <div class="col-auto m-3">
+            {{ partial "section/footer/pagination.html" . }}
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

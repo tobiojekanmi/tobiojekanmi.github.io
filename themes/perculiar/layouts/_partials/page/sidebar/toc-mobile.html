@@ -1,0 +1,36 @@
+<div class="row d-lg-none">  
+  <aside class="toc toc-page toc-wrapper">
+    <details>
+      <summary class="fw-bold">
+        {{ .Site.Params.terms.toc | default "Table of Contents" }}
+      </summary>
+      <nav class="custom-menu mt-3" aria-label="Table of Contents">
+        {{ $context := .Parent }}
+        {{ with $context }}
+          {{ range .Params.custommenu }}
+            {{ if .group }}
+              <div class="menu-group">
+                <div class="menu-group-title">{{ .group }}</div>
+                <ul class="menu-items">
+                  {{ range .items }}
+                    <li>
+                      {{ if .pageRef }}
+                        {{ $isActive := eq $.RelPermalink .pageRef }}
+                        <a href="{{ .pageRef }}" class="{{ if $isActive }}active{{ end }}" aria-current="{{ if $isActive }}page{{ end }}">
+                          {{ .name }}
+                        </a>
+                      {{ else }}
+                        <span class="no-link">{{ .name }}</span>
+                      {{ end }}
+                    </li>
+                  {{ end }}
+                </ul>
+              </div>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </nav>
+    </details>
+  </aside>
+
+</div>

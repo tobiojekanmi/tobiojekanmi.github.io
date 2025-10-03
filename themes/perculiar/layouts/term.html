@@ -1,0 +1,41 @@
+{{ define "head" }}
+  <meta name="description" content="{{ .Title }} - {{ humanize .Section }} | {{ .Site.Title }}">
+  <link rel="stylesheet" href="/css/list.css" media="all">
+{{ end }}
+
+{{ define "title" }}
+  {{ humanize .Section }}
+  {{ if in .Data.Singular "category" }} Category
+  {{ else if in .Data.Singular "tag" }} Tag
+  {{ end }} &mdash; {{ .Title }} | {{ .Site.Title }}
+{{ end }}
+
+{{ define "main" }}
+  <div class="row justify-content-center"> 
+    <div class="col-sm-12 col-md-12 col-lg-8"> 
+  
+      {{ partial "breadcrumbs.html" . }}
+  
+      <div class="pt-5" id="list-page">
+        <h1 class="text-left pb-4">
+          {{ humanize .Section }}
+          {{ if in .Data.Singular "category" }} Category
+          {{ else if in .Data.Singular "tag" }} Tag
+          {{ end }} &mdash; {{ .Title }}
+        </h1>
+
+        {{ range .Paginator.Pages }}
+          <div class="section-item">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+          </div>
+        {{ end }}
+
+        <div class="row justify-content-center">
+          <div class="col-auto m-3">
+            {{ partial "section/footer/pagination.html" . }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{ end }}

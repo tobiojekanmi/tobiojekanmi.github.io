@@ -1,0 +1,15 @@
+<div id="list-page" class="pt-5">
+    <h1 class="text-left pb-3">Recent Projects</h1>
+
+    {{ $recentPosts := first 5 (sort (where .Site.RegularPages "Section" "projects") "Date" "desc") }}
+
+    {{ range $recentPosts }}
+    <div class="section-item">
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+    </div>
+    {{ end }}
+
+    <div class="view-more mt-4">
+        <a href="/projects" class="btn btn-outline-secondary">View More Projects...</a>
+    </div>
+</div>

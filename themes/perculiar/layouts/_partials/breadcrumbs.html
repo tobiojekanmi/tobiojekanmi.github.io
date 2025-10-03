@@ -1,0 +1,32 @@
+
+{{ $isSingle := true -}}
+{{ with .Parent -}}
+  {{ $isSingle = .IsHome -}}
+{{ end -}}
+
+<nav aria-label="breadcrumb" class="breadcrumbs td-breadcrumbs{{ if $isSingle }} td-breadcrumbs__single{{ end }}">
+  <span>
+    <a href="{{ .Site.Home.RelPermalink }}">Home</a>
+  </span>
+  {{ template "breadcrumbnav" (dict "p1" . "p2" .) }}
+</nav>
+
+{{- define "breadcrumbnav" -}}
+  {{ if .p1.Parent -}}
+    {{ if not .p1.Parent.IsHome -}}
+      {{ template "breadcrumbnav" (dict "p1" .p1.Parent "p2" .p2) }}
+    {{ end -}}
+  {{ else if not .p1.IsHome -}}
+    {{ template "breadcrumbnav" (dict "p1" .p1.Site.Home "p2" .p2) }}
+  {{ end -}}
+
+  {{ $isActive := eq .p1 .p2 }}
+  {{ if not .p1.IsHome }}
+    &#187;
+    {{ if $isActive }}
+      <span>{{ .p1.LinkTitle }}</span>
+    {{ else }}
+      <a href="{{ .p1.RelPermalink }}">{{ .p1.LinkTitle }}</a>
+    {{ end }}
+  {{ end }}
+{{- end -}}

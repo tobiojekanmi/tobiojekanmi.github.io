@@ -1,0 +1,14 @@
+<div class="row d-lg-none px-2">  
+  <!-- On This Page TOC -->
+  <aside class="toc toc-mobile toc-wrapper">
+    <details>
+      <summary class="fw-bold">
+        {{ .Site.Params.terms.onthepage | default "On This Page" }}
+      </summary>
+      <div class="toc-content mt-2">
+        {{ .TableOfContents }}
+      </div>
+    </details>
+  </aside>
+
+</div>
