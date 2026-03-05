@@ -1,28 +1,20 @@
 ---
 title: "Neural Radiance Fields for High-Fidelity 3D Underwater Scene Reconstruction"
 date: 2024-07-22T18:46:47+08:00
-draft: false
-math: true
-summary: "This project investigates the application of Neural Radiance Fields (NeRFs) for restoring and representing high-fidelity underwater scenes."
-categories:
-  - Computer Vision
-  - Deep Learning
-projects/categories:
-  - Computer Vision
-  - Deep Learning
+description: "This project investigates the application of Neural Radiance Fields (NeRFs) for restoring and representing high-fidelity underwater scenes."
+projects/categories: ["Computer Vision", "Deep Learning"]
+projects/tags:
+  ["Neural Radiance Fields", "Underwater Imaging", "3D Reconstruction"]
+github: "https://github.com/tobiojekanmi/underwater-nerfs"
+paper: "https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/"
+demo: "https://youtu.be/P1rZwGtxHZw/"
 ---
 
-Code: [https://github.com/tobiojekanmi](https://github.com/tobiojekanmi) \
-Reconstructed Renderings: [https://youtu.be/P1rZwGtxHZw/](https://youtu.be/P1rZwGtxHZw/) \
-Full Project Report: [https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/](https://drive.google.com/file/d/1CegkWPxZcf2YJMaB82HmEPcIa4IxZsrc/)
-
----
-
-## 1. Project Overview
+## Project Overview
 
 This project investigates the application of Neural Radiance Fields (NeRFs) for restoring and representing high-fidelity underwater scenes. Underwater visual imaging often suffers from degradation due to various factors, with light attenuation and backscattering being the most significant. These degradation effects are functions of observation distances, making it challenging to consistently capture high-quality underwater images. Additionally, inconsistent images obscure relevant information, complicating analysis and high-fidelity reconstructions. Hence, this project aimed to estimate the degradation in an underwater image while training a NeRF model on the scene images. This would allow us to obtain a NeRF model that depicts the scene without water medium effects.
 
-## 2. Contributions and Method
+## Contributions and Method
 
 We propose new volume rendering equations and neural field architecture to represent underwater scenes in this project. Our proposed method integrates a physics-based image restoration model (SeaThru) into the standard NeRF volume rendering equations. This simplifies the reconstruction problem to be a combination of multi-view object radiance estimation and color restoration. Consequently, by combining these rendering equations with our proposed NeRF architecture, we were able to obtain high-fidelity ‘Restored Underwater Scene Models’ which depict the actual scenes without the water degradation effects on the images observed, and the ‘Original Underwater Scene Models’ which represent the scenes and its water medium effects.
 
@@ -32,8 +24,8 @@ $$
 \begin{aligned}
 J(r) &= \int_{t_n}^{t_f} T_o(t)\sigma_o(t)c_o(t, d)dt \\\\
 D(r) &= \int_{t_n}^{t_f} T_o(t)T_d(t)\sigma_o(t)c_o(t, d)dt \\\\
-B(r) &= \int_{t_n}^{t_f} T_o(t)(1 -T_b(t))\sigma_o(t)B^\infty_c(t)dt \\\\
-     &+ \left(1 - \int_{t_n}^{t_f} T_o(t)\sigma_o(t)dt \right) B^\infty_c(t) \\\\
+B(r) &= \int_{t_n}^{t_f} T_o(t)(1 -T_b(t))\sigma_o(t)B^\infty_c(t)dt
+     + \left(1 - \int_{t_n}^{t_f} T_o(t)\sigma_o(t)dt \right) B^\infty_c(t) \\\\
 I(r) &= D(r) + B(r)
 \end{aligned}
 $$
@@ -44,11 +36,11 @@ Additionally, we proposed a new NeRF architecture to account for the additional 
 
 ![Proposed Model Architecture](/images/projects/underwater-nerfs/model-architecture.png)
 
-## 3. Results
+## Results
 
 Our proposed method represents both shallow and deep-water environments with constant illumination and does not require pseudo-ground truth restored images to obtain the ‘Restored Underwater Scene Model’. It also outperforms other benchmarked methods qualitatively and quantitatively in most compared metrics and datasets. This validates its potential as a good representation technique for reconstructing underwater scenes.
 
-### 3.1. Synthesized Eiffel Tower Actual Scene Images
+### Synthesized Eiffel Tower Actual Scene Images
 
 <img src="static/images/projects/underwater-nerfs/2015/2015_gt_rgb_20150419T042408.000Z.jpg" />
 
@@ -60,10 +52,10 @@ Our proposed method represents both shallow and deep-water environments with con
 | :-----------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
 |                                               _SeaThru-NeRF Restored Image_                                               |                                            _Our Method's Restored Image_                                             |
 
-### 3.2. Quantitative Evaluation — Peak Signal-to-Noise Ratio (PSNR) $\uparrow$
+### Quantitative Evaluation — Peak Signal-to-Noise Ratio (PSNR) $\uparrow$
 
 | &nbsp;            | &nbsp; | Nerfacto | SeaThru-NeRF | Our Method |
-| ----------------- | ------ | -------- | ------------ | -------------- |
+| ----------------- | ------ | -------- | ------------ | ---------- |
 | Curasao           | &nbsp; | 16.41    | 38.03        | 39.70      |
 | IUI3 RedSea       | &nbsp; | 15.99    | 37.56        | 39.56      |
 | Japanese Gardens  | &nbsp; | 18.62    | 39.79        | 40.16      |
@@ -75,7 +67,7 @@ Our proposed method represents both shallow and deep-water environments with con
 
 Both the qualitative and quantitative evaluation results show that our method is consistently better than other relevant methods.
 
-## 4. Running this code
+## Running this code
 
 For this project, we used two datasets: Eiffel Tower and SeaThru-NeRF datasets. And for the implementation, we used the [Nerfstudio](https://nerf.studio) API. Hence, both dependencies are required.
 
@@ -88,7 +80,7 @@ For this project, we used two datasets: Eiffel Tower and SeaThru-NeRF datasets. 
 
 To run this code on your dataset, prepare your COLMAP data similarly to the approaches highlighted in the `scripts/datasetup_eiffel.sh` script. If you do not have a COLMAP model for your data, you can explore additional approaches provided in the [Nerfstudio](https://nerf.studio) API documentation and modify the Dataparser and Datamanager instances in the `experiments/v0/configs/base_configs.py` script to account for the respective data loading changes.
 
-## 5. Citation
+## Citation
 
 If you find this work useful for your research, please consider citing this work:
 
