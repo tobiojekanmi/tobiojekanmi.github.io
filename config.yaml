@@ -1,44 +1,28 @@
 baseURL: "https://tobiojekanmi.github.io"
 languageCode: "en-us"
-theme: "perculiar"
 title: "Oluwatobi's Blog"
 enableRobotsTXT: true
-
-outputs:
-  home: ["HTML", "RSS", "JSON"]
-  section: ["HTML", "RSS"]
-  taxonomy: ["HTML", "RSS"]
-  term: ["HTML", "RSS"]
-  page: ["HTML", "RSS"]
+theme: "zoe"
 
 pagination:
   pagerSize: 10
-
-markup:
-  goldmark:
-    renderer:
-      unsafe: true
 
 menus:
   main:
     - identifier: "blog"
       name: "Blog"
-      title: "Blog Posts"
       url: "/blog"
       weight: 1
     - identifier: "projects"
       name: "Projects"
-      title: "Projects"
       url: "/projects"
       weight: 2
     - identifier: "notes"
       name: "Notes"
-      title: "Notes"
       url: "/notes"
       weight: 3
     - identifier: "about"
       name: "About"
-      title: "About"
       url: "/about"
       weight: 4
 
@@ -46,29 +30,56 @@ params:
   title: "Oluwatobi's Blog"
   description: "Artificial Intelligence & Software Engineering"
   favicon: "/images/favicon.ico"
-  mathjax: true
-  animate: true
   enableReadingTime: true
+  logo:
+    img: "/images/favicon.ico"
+    text: "Oluwatobi's Blog"
 
-  author:
-    avatar: "images/avatar.png"
-    name: "Oluwatobi Ojekanmi"
-    bio: |
-      Hi ✋, I’m Oluwatobi, I develop and mainitain intelligent physical and non-physical systems that solve real-world challenges.
-    socialLinks:
-      fontAwesomeIcons:
-        - icon: "fa fa-envelope"
-          url: "mailto:oluwatobi.ojekanmi@gmail.com"
-        - icon: "fab fa-github"
-          url: "https://github.com/tobiojekanmi"
-        - icon: "fab fa-linkedin"
-          url: "https://linkedin.com/in/tobiojekanmi"
-        - icon: "fab fa-x-twitter"
-          url: "https://x.com/tobiojekanmi"
-        - icon: "fab fa-threads"
-          url: "https://threads.com/tobiojekanmi"
-        # - icon: "fab fa-medium"
-        #   url: "https://medium.com/@tobiojekanmi"
+  # Math rendering
+  math:
+    enable: true
+    # "katex" | "mathjax" | "both"
+    renderer: "both"
+
+  # Navigation and Homepage Section visibility
+  sections:
+    enableBlog: true
+    enableProjects: true
+    enableNotes: true
+
+  # Book / docs settings
+  book:
+    # Show breadcrumbs in book pages
+    breadcrumbs: true
+    # Show prev/next navigation at bottom of each book page
+    docNav: true
+    # Show sidebar section icons (requires icon: front-matter param)
+    sidebarIcons: false
+
+  # Homepage settings
+  home:
+    recentBlogs: 5
+    recentProjects: 5
+    recentNotes: 3
+
+  # Listing page settings
+  listing:
+    # Show category pill buttons above article list
+    showCategoryBar: true
+    # Show tag pills below article list + pagination
+    showTagBar: false
+
+  author: "Oluwatobi Ojekanmi"
+  avatar: "images/avatar.png"
+  role: "AI & Software Engineer"
+  bio: |
+    Hi ✋, I'm Oluwatobi. Welcome to my digital notebook, where I share my thoughts, what I’m learning, what I know, and the things I’m building along the way.
+
+  social:
+    github: "tobiojekanmi"
+    twitter: "tobiojekanmi"
+    linkedin: "tobiojekanmi"
+    email: "oluwatobi.ojekanmi@gmail.com"
 
 taxonomies:
   "blog/tag": "blog/tags"
@@ -77,3 +88,33 @@ taxonomies:
   "projects/category": "projects/categories"
   "notes/tag": "notes/tags"
   "notes/category": "notes/categories"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - - "$$"
+              - "$$"
+            - - "\\["
+              - "\\]"
+          inline:
+            - - "$"
+              - "$"
+            - - "\\("
+              - "\\)"
+  highlight:
+    style: dracula
+    lineNos: false
+    noClasses: false
+
+outputs:
+  home: ["HTML", "RSS", "JSON"]
+  section: ["HTML", "RSS"]
+  taxonomy: ["HTML", "RSS"]
+  term: ["HTML", "RSS"]
+  page: ["HTML", "RSS"]
