@@ -1,0 +1,62 @@
+/* =========================================================
+   COMPONENTS/TABS.CSS — Tab components
+   ========================================================= */
+
+/* ── Tabs (LotusDocs tabs shortcode pattern) ─────────────── */
+:root {
+  --tabs-border: var(--color-border);
+  --tabs-active-color: var(--color-link);
+}
+
+[data-dark-mode] {
+  --tabs-border: var(--color-border);
+}
+
+.tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--tabs-border);
+  margin-bottom: var(--sp-4);
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  padding: var(--sp-2) var(--sp-4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all var(--ease-fast);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+}
+
+.tab-btn.active {
+  color: var(--tabs-active-color);
+  border-bottom-color: var(--tabs-active-color);
+  font-weight: var(--weight-semibold);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.tabs-content {
+  margin-bottom: var(--sp-4);
+}

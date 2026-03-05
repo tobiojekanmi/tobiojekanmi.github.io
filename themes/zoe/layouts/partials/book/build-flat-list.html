@@ -1,0 +1,31 @@
+{{- /*
+  partials/book/build-flat-list.html — Recursively builds a flat, ordered list
+  of all navigable pages within a book, including section index pages (_index.md).
+
+  Section index pages are placed BEFORE their children in the list, giving the
+  linear reading order:
+      chapter-1/ → chapter-1/sub-1 → chapter-1/sub-2 → chapter-2/ → ...
+
+  Params:
+    section  — the Hugo section page to traverse
+    scratch  — the calling page's .Scratch (accumulates into key "flatPages")
+    isRoot   — bool; true for the book root (skip adding its own index to the list)
+*/}}
+{{- $section := .section }}
+{{- $scratch := .scratch }}
+{{- $isRoot  := .isRoot | default false }}
+
+{{- /* Add this section's own index page — unless it's the book root */}}
+{{- if not $isRoot }}
+  {{- $scratch.Add "flatPages" (slice $section) }}
+{{- end }}
+
+{{- /* Walk direct children in weight order.
+       .Pages on a section includes both regular pages and sub-sections. */}}
+{{- range $section.Pages.ByWeight }}
+  {{- if .IsSection }}
+    {{- partial "book/build-flat-list.html" (dict "section" . "scratch" $scratch "isRoot" false) }}
+  {{- else }}
+    {{- $scratch.Add "flatPages" (slice .) }}
+  {{- end }}
+{{- end }}

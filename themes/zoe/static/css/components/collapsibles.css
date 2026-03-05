@@ -1,0 +1,243 @@
+/* =========================================================
+   COMPONENTS/COLLAPSIBLES.CSS — Collapsible/accordion components
+   ========================================================= */
+
+/* ── Collapsible (LotusDocs details pattern) ─────────────── */
+.collapsible {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin: var(--sp-4) 0;
+  overflow: hidden;
+}
+.collapsible summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  background: var(--color-bg-muted);
+  user-select: none;
+  list-style: none;
+}
+.collapsible summary::-webkit-details-marker { display: none; }
+.collapsible summary::before {
+  content: "›";
+  font-size: 1.2em;
+  transition: transform var(--ease-fast);
+  flex-shrink: 0;
+}
+.collapsible[open] summary::before { transform: rotate(90deg); }
+.collapsible-body { padding: var(--sp-4); }
+
+/* ── Meta row ────────────────────────────────────────────── */
+.meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-6);
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.meta-item time { color: var(--color-text-muted); }
+
+/* ── Section list wrapper (blog, notes, posts, projects) ──── */
+/*
+ * All content-type listing pages use the same .section-list +
+ * .section-item pattern for visual consistency.
+ */
+.section-list {
+  margin-top: var(--sp-4);
+}
+
+/* ── Section items ──────────────────────────────────────────── */
+.section-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-5) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.section-item:last-child { border-bottom: none; }
+.section-item__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+}
+.section-item__thumb {
+  flex-shrink: 0;
+  width: 80px;
+  height: 55px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: none;
+}
+@media (min-width: 640px) { .section-item__thumb { display: block; } }
+.section-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.section-item__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  text-decoration: none;
+  line-height: var(--leading-snug);
+}
+.section-item__title:hover { color: var(--color-link); }
+.section-item__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.section-item__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  flex-wrap: wrap;
+}
+
+/* ── Feature grid (LotusDocs list view for docs sections) ── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-4);
+  margin: var(--sp-6) 0;
+}
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: all var(--ease-fast);
+}
+.feature-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.feature-card-icon {
+  font-size: 1.5em;
+  color: var(--primary);
+}
+.feature-card-title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+}
+.feature-card-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+.feature-card-arrow {
+  margin-top: auto;
+  font-size: var(--text-sm);
+  color: var(--color-link);
+  font-weight: var(--weight-medium);
+}
+
+/* =========================================================
+   FEATURE CARD — Used on book listings and book section pages
+   ========================================================= */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-4);
+}
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-5);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all var(--ease-fast);
+}
+.feature-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.feature-card__icon {
+  font-size: 1.8rem;
+  margin-bottom: var(--sp-3);
+}
+.feature-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--sp-2);
+  line-height: var(--leading-snug);
+}
+.feature-card__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--sp-3);
+  flex: 1;
+  line-height: var(--leading-relaxed);
+}
+.feature-card__meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: auto;
+}
+
+/* ── Inline category link (listing + home) ── */
+.meta-cat-link {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.meta-cat-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Category pill inline (book index) ── */
+.category-pill--inline {
+  font-size: 0.72rem;
+  padding: 0.15em 0.5em;
+  background: var(--color-surface-2);
+  border-radius: var(--radius-full);
+  color: var(--color-text-2);
+  text-decoration: none;
+  border: 1px solid var(--color-border);
+  transition: background 0.15s, color 0.15s;
+}
+.category-pill--inline:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* ── Small tag variant ── */
+.tag--small {
+  font-size: 0.72rem;
+  padding: 0.1em 0.45em;
+}
+
+/* ── Post meta icon ── */
+.post-meta__icon {
+  vertical-align: middle;
+  margin-right: 0.2em;
+  flex-shrink: 0;
+}
+
+/* ── Book index section item ── */
+.section-item--book {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--sp-3);
+}
+

@@ -1,0 +1,107 @@
+{{- /*
+  partials/post/single.html — Shared single-page layout for Post type.
+  Used by both blog/page.html and project/page.html.
+
+  Call with:
+    (dict "page" . "section" "blog")
+    (dict "page" . "section" "projects")
+
+  Renders: breadcrumbs, post header (title, desc, meta, optional
+  action buttons), optional featured image, prose content, post
+  footer (tags + social), prev/next navigation.
+  Right sidebar ("On This Page") shown when TOC is available.
+*/}}
+{{- $page    := .page }}
+{{- $section := .section | default $page.Section }}
+{{- $hasTOC  := and (ne $page.Params.toc false) (ne $page.TableOfContents "<nav id=\"TableOfContents\"></nav>") }}
+
+<div class="page-grid page-grid--post">
+
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+
+    {{- partial "breadcrumbs.html" $page }}
+
+    <header class="post-header">
+      <h1 class="post-title">{{ $page.Title }}</h1>
+      {{- with $page.Description }}<p class="lead">{{ . | markdownify }}</p>{{- end }}
+
+      {{- partial "post-meta.html" (dict "page" $page "section" $section) }}
+
+      {{- /* Action buttons — shown only when at least one param is set */}}
+      {{- if or $page.Params.github (or $page.Params.demo $page.Params.paper) }}
+        <div class="project-action-btns">
+          {{- with $page.Params.github }}
+            <a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-ghost">⬡ GitHub</a>
+          {{- end }}
+          {{- with $page.Params.demo }}
+            <a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-primary">↗ Live Demo</a>
+          {{- end }}
+          {{- with $page.Params.paper }}
+            <a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-ghost">📄 Paper</a>
+          {{- end }}
+        </div>
+      {{- end }}
+    </header>
+
+    {{- /* Mobile: inline TOC — same component as book pages (hidden ≥1200px via grid.css) */}}
+    {{- if $hasTOC }}
+    <div class="book-mobile-inline book-mobile-inline--toc">
+      <button class="book-mobile-inline__toggle" aria-expanded="false"
+              data-target="post-mobile-toc">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" aria-hidden="true">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <span>On this page</span>
+        <svg class="book-mobile-inline__chevron" width="14" height="14" viewBox="0 0 24 24"
+             fill="currentColor" aria-hidden="true">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+        </svg>
+      </button>
+      <div class="book-mobile-inline__panel" id="post-mobile-toc" hidden>
+        {{- $page.TableOfContents | replaceRE `<nav id="TableOfContents">` `<nav id="toc-inline">` | safeHTML }}
+      </div>
+    </div>
+    {{- end }}
+
+    {{- with $page.Params.image }}
+      <div class="post-featured-img">
+        <img src="{{ . }}" alt="{{ $page.Title }}" loading="lazy">
+      </div>
+    {{- end }}
+
+    <div class="prose" id="content">{{ $page.Content }}</div>
+
+    <div class="post-footer">
+      {{- /* Resolve tags: prefer namespaced key (e.g. blog/tags) */}}
+      {{- $tags := index $page.Params (printf "%s/tags" $section) }}
+      {{- if not $tags }}{{- $tags = $page.Params.tags }}{{- end }}
+      {{- with $tags }}
+        <div class="post-footer__tags">
+          <span class="post-footer__label">Tags</span>
+          {{- range . }}
+            <a href="{{ printf "/%s/tags/%s/" $section (. | urlize) | relLangURL }}" class="tag">{{ . }}</a>
+          {{- end }}
+        </div>
+      {{- end }}
+      {{- partial "page/footer/social.html" $page }}
+    </div>
+
+    {{- partial "page/footer/navigation.html" $page }}
+
+  </div>
+
+  {{- if $hasTOC }}
+    <div class="page-grid__right page-grid__right--sticky">
+      {{- partial "page/sidebar/right-sidebar.html" $page }}
+    </div>
+  {{- else }}
+    <div class="page-grid__right" aria-hidden="true"></div>
+  {{- end }}
+
+</div>

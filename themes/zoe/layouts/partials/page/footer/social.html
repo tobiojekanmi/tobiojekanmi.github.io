@@ -1,0 +1,18 @@
+{{- /* Social share buttons */}}
+{{- if ne .Params.socialShare false }}
+<div class="social-share">
+  <span class="social-share-label">Share:</span>
+  <a href="https://twitter.com/intent/tweet?url={{ .Permalink | urlize }}&text={{ .Title | urlize }}"
+     target="_blank" rel="noopener noreferrer" class="social-share-btn" aria-label="Share on Twitter">
+    𝕏 Twitter
+  </a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlize }}"
+     target="_blank" rel="noopener noreferrer" class="social-share-btn" aria-label="Share on LinkedIn">
+    in LinkedIn
+  </a>
+  <a href="mailto:?subject={{ .Title | urlize }}&body={{ .Permalink | urlize }}"
+     class="social-share-btn" aria-label="Share via email">
+    ✉ Email
+  </a>
+</div>
+{{- end }}

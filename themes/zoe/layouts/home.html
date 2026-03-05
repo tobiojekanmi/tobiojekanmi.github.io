@@ -1,0 +1,59 @@
+{{- define "main" }}
+
+<div class="page-grid page-grid--home">
+
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+
+    <div class="home-profile-center">
+      {{- partial "home/about.html" . }}
+    </div>
+
+    {{- $sections := .Site.Params.sections | default (dict) }}
+
+    {{- /* Blog — enabled by default */}}
+    {{- if ne (index $sections "enableBlog") false }}
+    {{ partial "home/section-list.html" (dict
+        "section"        "blog"
+        "url"            "/blog"
+        "count"          site.Params.home.recentBlogs
+        "mode"           "pages"
+        "showDate"       true
+        "showReading"    true
+        "showCategories" true
+    ) }}
+    {{- end }}
+
+    {{- /* Projects — enabled by default */}}
+    {{- if ne (index $sections "enableProjects") false }}
+    {{ partial "home/section-list.html" (dict
+        "section"        "projects"
+        "url"            "/projects"
+        "count"          site.Params.home.recentProjects
+        "mode"           "pages"
+        "showDate"       true
+        "showReading"    false
+        "showCategories" true
+    ) }}
+    {{- end }}
+
+    {{- /* Notes — enabled by default */}}
+    {{- if ne (index $sections "enableNotes") false }}
+    {{ partial "home/section-list.html" (dict
+        "section"        "notes"
+        "url"            "/notes"
+        "count"          site.Params.home.recentNotes
+        "mode"           "sections"
+        "showDate"       true
+        "showReading"    false
+        "showCategories" true
+    ) }}
+    {{- end }}
+
+  </div>
+
+  <div class="page-grid__right" aria-hidden="true"></div>
+
+</div>
+{{- end }}

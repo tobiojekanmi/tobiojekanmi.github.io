@@ -1,0 +1,166 @@
+{{- /*
+  partials/book/sidebar.html — Left sidebar for book pages.
+
+  Finds the root book (the direct child of /notes/ that contains the current
+  page) and renders its full page tree as a collapsible nav.
+
+  Collapse behaviour is controlled by the book's front-matter:
+    collapseChapters: false   (default) — all chapters expanded on load
+    collapseChapters: true              — only the active chapter is expanded;
+                                          others collapse until clicked
+*/}}
+
+{{- /* ── Locate root book section ───────────────────────── */}}
+{{- $currentPage := . }}
+{{- $book        := . }}
+{{- $notesSection := site.GetPage "/notes" }}
+{{- if $notesSection }}
+  {{- range $notesSection.Sections }}
+    {{- if in $currentPage.RelPermalink .RelPermalink }}
+      {{- $book = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* ── Collapse config (default: show all) ─────────────── */}}
+{{- $collapse := $book.Params.collapseChapters | default false }}
+
+{{- /* ── Sidebar header ──────────────────────────────────── */}}
+<div class="book-sidebar__header">
+  <a href="{{ $book.RelPermalink }}" class="book-sidebar__title">
+    {{- with $book.Params.icon }}
+      <span class="material-icons book-sidebar__icon" aria-hidden="true">{{ . }}</span>
+    {{- end }}
+    <span>{{ $book.Title }}</span>
+  </a>
+  <button class="book-sidebar-close" id="book-sidebar-close" aria-label="Close sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+</div>
+
+<nav class="book-sidebar__nav" aria-label="Book navigation">
+  <ul class="book-nav__list book-nav__list--root">
+
+    {{- /* ── Top-level direct pages (non-section) ────────── */}}
+    {{- $lastPageGroup := "" }}
+    {{- range $book.Pages.ByWeight }}
+      {{- if not .IsSection }}
+        {{- $active := eq $currentPage.RelPermalink .RelPermalink }}
+        {{- $group  := .Params.group | default "" }}
+        {{- if and $group (ne $group $lastPageGroup) }}
+          <li class="book-nav__group" aria-hidden="true">{{ $group }}</li>
+        {{- end }}
+        {{- $lastPageGroup = $group }}
+        <li class="book-nav__item{{ if $active }} active{{ end }}">
+          <a href="{{ .RelPermalink }}" class="book-nav__link{{ if $active }} active{{ end }}">
+            {{- if and $.Site.Params.book.sidebarIcons .Params.icon }}
+              <span class="material-icons book-nav__item-icon" aria-hidden="true">{{ .Params.icon }}</span>
+            {{- end }}
+            {{- .Title }}
+          </a>
+        </li>
+      {{- end }}
+    {{- end }}
+
+    {{- /* ── Chapter sections ────────────────────────────── */}}
+    {{- $lastGroup := "" }}
+    {{- range $book.Sections.ByWeight }}
+      {{- $section  := . }}
+      {{- $isActive := in $currentPage.RelPermalink .RelPermalink }}
+      {{- $group    := .Params.group | default "" }}
+
+      {{- if and $group (ne $group $lastGroup) }}
+        <li class="book-nav__group" aria-hidden="true">{{ $group }}</li>
+      {{- end }}
+      {{- $lastGroup = $group }}
+
+      {{- /* When collapseChapters is false, all sections start open.
+             When true, only the active ancestor section starts open. */}}
+      {{- $open := or $isActive (not $collapse) }}
+
+      <li class="book-nav__item book-nav__item--section{{ if $isActive }} active{{ end }}{{ if $open }} open{{ end }}">
+        <button class="book-nav__section-toggle{{ if $open }} open{{ end }}"
+                aria-expanded="{{ if $open }}true{{ else }}false{{ end }}"
+                data-section="{{ .RelPermalink | urlize }}">
+          {{- if and $.Site.Params.book.sidebarIcons .Params.icon }}
+            <span class="material-icons book-nav__item-icon" aria-hidden="true">{{ .Params.icon }}</span>
+          {{- end }}
+          <a href="{{ .RelPermalink }}"
+             class="book-nav__section-link{{ if eq $currentPage.RelPermalink .RelPermalink }} active{{ end }}"
+             onclick="event.stopPropagation();">{{ .Title }}</a>
+          <svg class="book-nav__chevron" width="16" height="16" viewBox="0 0 24 24"
+               fill="currentColor" aria-hidden="true">
+            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+          </svg>
+        </button>
+
+        <ul class="book-nav__sublist{{ if $open }} open{{ end }}"
+            id="section-{{ .RelPermalink | urlize }}">
+
+          {{- /* Sub-pages (leaf pages directly under this chapter) */}}
+          {{- range .Pages.ByWeight }}
+            {{- if not .IsSection }}
+              {{- $active := eq $currentPage.RelPermalink .RelPermalink }}
+              <li class="book-nav__item{{ if $active }} active{{ end }}">
+                <a href="{{ .RelPermalink }}"
+                   class="book-nav__link book-nav__link--sub{{ if $active }} active{{ end }}">
+                  {{- .Title }}
+                </a>
+              </li>
+            {{- end }}
+          {{- end }}
+
+          {{- /* Nested sub-sections (2 levels deep) */}}
+          {{- range .Sections.ByWeight }}
+            {{- $nested  := . }}
+            {{- $nActive := in $currentPage.RelPermalink .RelPermalink }}
+            {{- $nOpen   := or $nActive (not $collapse) }}
+
+            <li class="book-nav__item book-nav__item--section{{ if $nActive }} active{{ end }}{{ if $nOpen }} open{{ end }}">
+              <button class="book-nav__section-toggle book-nav__section-toggle--nested{{ if $nOpen }} open{{ end }}"
+                      aria-expanded="{{ if $nOpen }}true{{ else }}false{{ end }}"
+                      data-section="{{ .RelPermalink | urlize }}">
+                <a href="{{ .RelPermalink }}"
+                   class="book-nav__section-link{{ if eq $currentPage.RelPermalink .RelPermalink }} active{{ end }}"
+                   onclick="event.stopPropagation();">{{ .Title }}</a>
+                <svg class="book-nav__chevron" width="14" height="14" viewBox="0 0 24 24"
+                     fill="currentColor" aria-hidden="true">
+                  <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+              </button>
+              <ul class="book-nav__sublist{{ if $nOpen }} open{{ end }}"
+                  id="section-{{ .RelPermalink | urlize }}">
+                {{- range .Pages.ByWeight }}
+                  {{- if not .IsSection }}
+                    {{- $active := eq $currentPage.RelPermalink .RelPermalink }}
+                    <li class="book-nav__item{{ if $active }} active{{ end }}">
+                      <a href="{{ .RelPermalink }}"
+                         class="book-nav__link book-nav__link--nested{{ if $active }} active{{ end }}">
+                        {{- .Title }}
+                      </a>
+                    </li>
+                  {{- end }}
+                {{- end }}
+              </ul>
+            </li>
+          {{- end }}
+
+        </ul>
+      </li>
+    {{- end }}
+
+  </ul>
+</nav>
+
+{{- /* ── Back link ─────────────────────────────────────── */}}
+{{- $notesRoot := site.GetPage "/notes" }}
+<div class="book-sidebar__footer">
+  {{- with $notesRoot }}
+  <a href="{{ .RelPermalink }}" class="book-sidebar__back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+    All Notes
+  </a>
+  {{- end }}
+</div>

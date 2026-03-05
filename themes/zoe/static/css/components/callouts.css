@@ -1,0 +1,75 @@
+/* =========================================================
+   COMPONENTS/CALLOUTS.CSS — Alert and callout blocks
+   ========================================================= */
+
+/* ── Alerts / Callouts (LotusDocs alert pattern) ─────────── */
+.callout {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border: 1px solid var(--alert-border);
+  border-radius: var(--radius-md);
+  margin: var(--sp-6) 0;
+  font-size: var(--text-sm);
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout-icon {
+  flex-shrink: 0;
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+.callout-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.callout-title {
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--sp-1);
+  font-size: var(--text-sm);
+}
+
+.callout-note {
+  background: var(--alert-note-bg);
+}
+
+.callout-note .callout-icon {
+  color: var(--alert-note-icon);
+}
+
+.callout-info {
+  background: var(--alert-info-bg);
+}
+
+.callout-info .callout-icon {
+  color: var(--alert-info-icon);
+}
+
+.callout-tip {
+  background: var(--alert-success-bg);
+}
+
+.callout-tip .callout-icon {
+  color: var(--alert-success-icon);
+}
+
+.callout-warning {
+  background: var(--alert-warning-bg);
+}
+
+.callout-warning .callout-icon {
+  color: var(--alert-warning-icon);
+}
+
+.callout-danger {
+  background: var(--alert-danger-bg);
+}
+
+.callout-danger .callout-icon {
+  color: var(--alert-danger-icon);
+}

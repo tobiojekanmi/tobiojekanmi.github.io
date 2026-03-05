@@ -1,0 +1,66 @@
+{{- /*
+  page/footer/navigation.html — Previous / Next page navigation.
+
+  Priority:
+  1. Explicit front matter overrides (prevPage / nextPage)
+  2. Default section-based navigation (by date order)
+
+  Front matter:
+    prevPage:  "/path/to/page"   (Hugo page ref)
+    nextPage:  "/path/to/page"
+    prevTitle: "Custom Title"    (optional display override)
+    nextTitle: "Custom Title"
+*/}}
+{{- $currentPage := . }}
+{{- $prev        := false }}
+{{- $next        := false }}
+{{- $prevTitle   := "" }}
+{{- $nextTitle   := "" }}
+
+{{- /* ── 1. Explicit front matter overrides ──────────────── */}}
+{{- if .Params.prevPage }}
+  {{- $pp := .Site.GetPage .Params.prevPage }}
+  {{- if $pp }}{{- $prev = $pp }}{{- end }}
+  {{- $prevTitle = .Params.prevTitle | default (and $prev $prev.Title) }}
+{{- end }}
+{{- if .Params.nextPage }}
+  {{- $np := .Site.GetPage .Params.nextPage }}
+  {{- if $np }}{{- $next = $np }}{{- end }}
+  {{- $nextTitle = .Params.nextTitle | default (and $next $next.Title) }}
+{{- end }}
+
+{{- /* ── 2. Default section-based navigation ─────────────── */}}
+{{- if and (not $prev) (not $next) }}
+  {{- $pages := where .Site.RegularPages "Section" .Section }}
+  {{- $prev   = $pages.Prev . }}
+  {{- $next   = $pages.Next . }}
+{{- end }}
+
+{{- /* Resolve display titles */}}
+{{- if and $prev (not $prevTitle) }}{{- $prevTitle = $prev.Title }}{{- end }}
+{{- if and $next (not $nextTitle) }}{{- $nextTitle = $next.Title }}{{- end }}
+
+{{- if or $prev $next }}
+<hr class="doc-hr">
+<nav id="doc-nav" class="doc-nav" aria-label="Post navigation">
+
+  {{- if $prev }}
+    <a href="{{ $prev.RelPermalink }}" class="doc-nav-card doc-nav-card--prev">
+      <div class="doc-nav-label">← Previous</div>
+      <div class="doc-nav-title">{{ $prevTitle }}</div>
+    </a>
+  {{- else }}
+    <div></div>
+  {{- end }}
+
+  {{- if $next }}
+    <a href="{{ $next.RelPermalink }}" class="doc-nav-card doc-nav-card--next">
+      <div class="doc-nav-label">Next →</div>
+      <div class="doc-nav-title">{{ $nextTitle }}</div>
+    </a>
+  {{- else }}
+    <div></div>
+  {{- end }}
+
+</nav>
+{{- end }}

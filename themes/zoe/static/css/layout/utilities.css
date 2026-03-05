@@ -1,0 +1,77 @@
+/* =========================================================
+   LAYOUT/UTILITIES.CSS — Back-to-top, progress bar,
+   footer, overlay, page container.
+   ========================================================= */
+
+#back-to-top {
+  position: fixed;
+  bottom: var(--sp-6);
+  right: var(--sp-6);
+  z-index: 99;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--ease-fast);
+  padding: 0;
+}
+
+#back-to-top:hover {
+  background: var(--primary-800);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+#back-to-top.visible {
+  display: flex;
+}
+
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--primary);
+  z-index: 999;
+  pointer-events: none;
+  transition: width 100ms linear;
+}
+
+.site-footer {
+  padding: var(--sp-6);
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 199;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+.page-container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+}
+
+@media (min-width: 1025px) {
+  .page-container {
+    padding: 0 var(--sp-8);
+  }
+}

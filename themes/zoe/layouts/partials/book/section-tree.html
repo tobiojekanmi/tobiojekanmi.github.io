@@ -1,0 +1,23 @@
+{{- /*
+  partials/book/section-tree.html — Recursive content listing.
+  Used on book section index pages to auto-generate a table of contents.
+*/}}
+<ul class="book-section-toc__list">
+  {{- range .Pages.ByWeight }}
+    {{- if .IsSection }}
+      <li class="book-section-toc__item book-section-toc__item--section">
+        <a href="{{ .RelPermalink }}" class="book-section-toc__section-link">{{ .Title }}</a>
+        {{- if .Pages }}
+          {{- partial "book/section-tree.html" . }}
+        {{- end }}
+      </li>
+    {{- else }}
+      <li class="book-section-toc__item">
+        <a href="{{ .RelPermalink }}" class="book-section-toc__link">{{ .Title }}</a>
+        {{- with .Description }}
+          <span class="book-section-toc__desc">— {{ . }}</span>
+        {{- end }}
+      </li>
+    {{- end }}
+  {{- end }}
+</ul>

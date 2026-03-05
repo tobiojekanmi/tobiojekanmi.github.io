@@ -1,0 +1,27 @@
+{{- define "main" }}
+{{- $taxPlural := .Data.Plural }}
+{{- $section   := index (split $taxPlural "/") 0 }}
+{{- if not $section }}{{- $section = .Section }}{{- end }}
+
+<div class="page-grid page-grid--listing">
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+    {{- partial "breadcrumbs.html" . }}
+    <div class="listing-header">
+      <h1 class="listing-title">{{ .Title | title }}</h1>
+      {{- with .Description }}<p class="listing-desc">{{ . }}</p>{{- end }}
+    </div>
+    <div class="taxonomy-grid">
+      {{- range .Data.Terms.Alphabetical }}
+        <a href="{{ .Page.Permalink }}" class="taxonomy-tag">
+          {{ .Page.Title }}
+          <span class="taxonomy-count">{{ .Count }}</span>
+        </a>
+      {{- end }}
+    </div>
+  </div>
+
+  <div class="page-grid__right" aria-hidden="true"></div>
+</div>
+{{- end }}

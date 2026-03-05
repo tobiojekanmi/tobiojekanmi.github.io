@@ -1,0 +1,41 @@
+{{- /*
+  layouts/page.html — Standalone Page content type.
+  URL: /about/, /contact/, etc.
+  Layout: empty-left | center (breadcrumbs + title + prose) | right TOC
+  Right sidebar shown when page has headings (same as Post type).
+*/}}
+{{- define "main" }}
+{{- $hasTOC := and (ne .Params.toc false) (ne .TableOfContents "<nav id=\"TableOfContents\"></nav>") }}
+
+<div class="page-grid page-grid--page">
+
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+    {{- partial "breadcrumbs.html" . }}
+
+    <header class="post-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{- with .Description }}<p class="lead">{{ . | markdownify }}</p>{{- end }}
+    </header>
+
+    {{- /* Mobile: On This Page (< 1200px) */}}
+    {{- if $hasTOC }}
+      <div class="page-grid__right-mobile-single">
+        {{- partial "page/sidebar/right-sidebar-mobile.html" . }}
+      </div>
+    {{- end }}
+
+    {{- with .Content }}<div class="prose" id="content">{{ . }}</div>{{- end }}
+  </div>
+
+  {{- if $hasTOC }}
+    <div class="page-grid__right page-grid__right--sticky">
+      {{- partial "page/sidebar/right-sidebar.html" . }}
+    </div>
+  {{- else }}
+    <div class="page-grid__right" aria-hidden="true"></div>
+  {{- end }}
+
+</div>
+{{- end }}

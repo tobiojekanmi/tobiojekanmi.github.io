@@ -1,0 +1,22 @@
+{{- /*
+  layouts/section.html — Fallback section listing.
+  Used by blog/ and projects/ (and any other regular section).
+  Renders a 3-col listing grid with right sidebar.
+*/}}
+{{- define "main" }}
+<div class="page-grid page-grid--listing">
+
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+    {{- partial "section/main/list-layout.html" (dict
+        "type"           "page"
+        "section"        .Section
+        "page"           .
+        "paginatorPages" .Paginator.Pages
+        "paginator"      .Paginator) }}
+  </div>
+  <div class="page-grid__right" aria-hidden="true"></div>
+
+</div>
+{{- end }}

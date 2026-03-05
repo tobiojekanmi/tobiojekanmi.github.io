@@ -1,0 +1,35 @@
+{{- /* Breadcrumbs — full hierarchy, breadcrumb aligned with center column */}}
+{{- if ne .Kind "home" }}
+<nav aria-label="Breadcrumb" class="breadcrumb-nav d-print-none">
+  <ol class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+
+    {{- /* Home */}}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="{{ "/" | relLangURL }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+
+    {{- /* Ancestors in order (Hugo gives them root→current) */}}
+    {{- $pos := 2 }}
+    {{- range .Ancestors.Reverse }}
+      {{- if and (ne .Kind "home") (ne .RelPermalink $.RelPermalink) }}
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="{{ .RelPermalink }}"><span itemprop="name">{{ .Title }}</span></a>
+          <meta itemprop="position" content="{{ $pos }}" />
+        </li>
+        {{- $pos = add $pos 1 }}
+      {{- end }}
+    {{- end }}
+
+    {{- /* Current page */}}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
+        aria-current="page">
+      <span itemprop="name">{{ .Title | default (.Section | humanize | title) }}</span>
+      <meta itemprop="position" content="{{ $pos }}" />
+    </li>
+
+  </ol>
+</nav>
+{{- end }}

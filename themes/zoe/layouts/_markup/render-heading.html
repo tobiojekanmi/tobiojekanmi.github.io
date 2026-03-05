@@ -1,0 +1,7 @@
+{{- /* Render hook: heading with anchor link — LotusDocs render-heading.html */}}
+<h{{ .Level }} id="{{ .Anchor | safeURL }}">
+  {{ .Text | safeHTML }}
+  {{- if ge .Level 2 }}
+    <a href="#{{ .Anchor | safeURL }}" class="anchor" aria-hidden="true" tabindex="-1">#</a>
+  {{- end }}
+</h{{ .Level }}>

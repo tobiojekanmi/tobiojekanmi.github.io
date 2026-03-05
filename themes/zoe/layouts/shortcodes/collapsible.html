@@ -1,0 +1,5 @@
+{{- $title := .Get "title" | default "Show more" }}
+<details class="collapsible">
+  <summary>{{ $title }}</summary>
+  <div class="collapsible-body">{{ .Inner | markdownify }}</div>
+</details>

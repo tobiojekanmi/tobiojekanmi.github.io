@@ -1,0 +1,18 @@
+{{- /* Callout shortcode — LotusDocs alert.html pattern */}}
+{{- $type := .Get "type" | default "note" }}
+{{- $title := .Get "title" }}
+{{- $icons := dict
+    "note"    "ℹ"
+    "info"    "ℹ"
+    "tip"     "✓"
+    "warning" "⚠"
+    "danger"  "✕"
+}}
+{{- $icon := index $icons $type | default "ℹ" }}
+<div class="callout callout-{{ $type }}" role="alert">
+  <div class="callout-icon" aria-hidden="true">{{ $icon }}</div>
+  <div class="callout-body">
+    {{- with $title }}<div class="callout-title">{{ . }}</div>{{- end }}
+    <div>{{ .Inner | markdownify }}</div>
+  </div>
+</div>

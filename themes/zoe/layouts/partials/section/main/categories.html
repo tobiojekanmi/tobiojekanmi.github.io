@@ -1,0 +1,42 @@
+{{- /*
+  listing/categories.html
+  ─────────────────────────
+  Category pill bar above article lists.
+  Shows "All" + each category as a clickable pill.
+  Active category (or "All" on base listing page) gets .active class.
+*/}}
+{{- $page    := .page }}
+{{- $section := .section | default "" | lower }}
+{{- $showCats := true }}
+{{- if isset $page.Site.Params.listing "showCategoryBar" }}
+  {{- $showCats = $page.Site.Params.listing.showCategoryBar }}
+{{- end }}
+
+{{- if $showCats }}
+  {{- $catKey    := printf "%s/categories" $section }}
+  {{- $categories := index $page.Site.Taxonomies $catKey }}
+  {{- if not $categories }}{{- $categories = $page.Site.Taxonomies.categories }}{{- end }}
+
+  {{- if $categories }}
+  {{- $activeCat := "" }}
+  {{- if eq $page.Kind "term" }}
+    {{- $activeCat = $page.Title | lower }}
+  {{- end }}
+
+  <nav class="category-bar" aria-label="Browse categories">
+    <a href="{{ printf "/%s/" $section | relLangURL }}"
+       class="category-pill{{ if eq $activeCat "" }} active{{ end }}"
+       aria-current="{{ if eq $activeCat "" }}page{{ end }}">All</a>
+      {{- range $name, $pages := $categories }}
+        {{- $title := $pages.Page.Title }}
+        {{- $isActive := eq ($name | lower) $activeCat }}
+        <a href="{{ printf "/%s/categories/%s/" $section ($name | urlize) | relLangURL }}"
+          class="category-pill{{ if $isActive }} active{{ end }}"
+          aria-current="{{ if $isActive }}page{{ end }}">
+          {{ $title }}<span class="category-pill__count">{{ len $pages }}</span>
+        </a>
+      {{- end }}
+  </nav>
+  {{- end }}
+{{- end }}
+  
