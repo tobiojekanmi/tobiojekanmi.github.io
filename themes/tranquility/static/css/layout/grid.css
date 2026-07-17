@@ -1,0 +1,215 @@
+/* =========================================================
+   LAYOUT/GRID.CSS — Universal 3-column page grid system
+   Columns: left-sidebar | center-content | right-sidebar
+   Breakpoints: ≥1200px (3-col) | 992–1199px (2-col) | <992px (1-col)
+   ========================================================= */
+
+/* ── Body shell ──────────────────────────────────────────── */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#main-content {
+  flex: 1;
+}
+
+/* ── Top header ──────────────────────────────────────────── */
+.top-header {
+  position: sticky;
+  top: 0;
+  z-index: 150;
+  height: var(--header-height);
+  background: var(--topbar-bg);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--ease-medium);
+}
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 var(--sp-6);
+  gap: var(--sp-3);
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* ── Outer content wrapper ───────────────────────────────── */
+.layout-spacing {
+  padding: var(--sp-8) var(--sp-6) var(--sp-12);
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .layout-spacing {
+    padding: var(--sp-6) var(--sp-4) var(--sp-10);
+  }
+}
+
+/* =========================================================
+   UNIVERSAL THREE-COLUMN PAGE GRID
+   Columns: left-sidebar | center-content | right-sidebar
+   --sidebar-width = 250px, --toc-width = 250px
+   ========================================================= */
+
+.page-grid {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--toc-width);
+  grid-template-areas: "left center right";
+  column-gap: var(--sp-8);
+  align-items: start;
+  width: 100%;
+}
+
+.page-grid__left {
+  grid-area: left;
+  min-width: 0;
+}
+
+.page-grid__center {
+  grid-area: center;
+  min-width: 0;
+}
+
+.page-grid__right {
+  grid-area: right;
+  min-width: 0;
+}
+
+/* ── Sticky sidebar columns ──────────────────────────────── */
+.page-grid__left--sticky,
+.page-grid__right--sticky {
+  position: sticky;
+  top: calc(var(--header-height) + var(--sp-6));
+  max-height: calc(100vh - var(--header-height) - var(--sp-12));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.page-grid__left--sticky:hover,
+.page-grid__right--sticky:hover {
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.page-grid__left--sticky::-webkit-scrollbar,
+.page-grid__right--sticky::-webkit-scrollbar {
+  width: 3px;
+}
+
+.page-grid__left--sticky::-webkit-scrollbar-thumb,
+.page-grid__right--sticky::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: var(--radius-full);
+}
+
+.page-grid__left--sticky:hover::-webkit-scrollbar-thumb,
+.page-grid__right--sticky:hover::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+}
+
+/* ── Notes/book left sidebar: full-height bg strip ───────── */
+.page-grid__left--notes {
+  background: var(--sidebar-bg);
+  min-height: calc(100vh - var(--header-height));
+  top: var(--header-height);
+  max-height: calc(100vh - var(--header-height));
+  border-right: 1px solid var(--color-border);
+}
+
+@media (min-width: 992px) {
+  .page-grid__left--notes {
+    margin-left: calc(-1 * var(--sp-6));
+    padding-left: var(--sp-6);
+    margin-top: calc(-1 * var(--sp-8));
+    margin-bottom: calc(-1 * var(--sp-12));
+    padding-top: var(--sp-8);
+    padding-bottom: var(--sp-12);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-grid__left--notes {
+    margin-top: calc(-1 * var(--sp-6));
+    margin-bottom: calc(-1 * var(--sp-10));
+  }
+}
+
+/* ── Mobile inline slots (inside center col) ─────────────── */
+.page-grid__left-mobile {
+  display: none;
+  margin-bottom: var(--sp-5);
+}
+
+.page-grid__right-mobile-single {
+  display: none;
+  margin-bottom: var(--sp-6);
+}
+
+.page-grid__right-mobile-listing {
+  display: none;
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── Responsive: hide/show columns ──────────────────────── */
+
+/* < 1200px: right column disappears */
+@media (max-width: 1199px) {
+  .page-grid {
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    grid-template-areas: "left center";
+  }
+
+  .page-grid__right {
+    display: none;
+  }
+
+  /* Show inline TOC collapsible for post pages (book pages use their own breakpoint at 992px) */
+  .page-grid--post .book-mobile-inline {
+    display: block;
+  }
+
+  .page-grid__right-mobile-single {
+    display: block;
+  }
+
+  .page-grid__right-mobile-listing {
+    display: block;
+  }
+}
+
+/* < 992px: left column also disappears */
+@media (max-width: 991px) {
+  .page-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "center";
+  }
+
+  .page-grid__left {
+    display: none;
+  }
+
+  .page-grid__left-mobile {
+    display: block;
+  }
+}
+
+/* ── Listing content spacing ── */
+.listing-content {
+  margin-bottom: var(--sp-6);
+}

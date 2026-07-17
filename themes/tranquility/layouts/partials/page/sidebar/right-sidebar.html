@@ -1,0 +1,7 @@
+{{- /* Right TOC — LotusDocs .docs-toc with scrollspy */}}
+{{- if and (ne .Params.toc false) (ne .TableOfContents "<nav id=\"TableOfContents\"></nav>") }}
+<aside class="docs-toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  {{- .TableOfContents | replaceRE `<nav id="TableOfContents">` `<nav id="toc">` | safeHTML }}
+</aside>
+{{- end }}

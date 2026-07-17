@@ -1,0 +1,14 @@
+<footer class="site-footer" role="contentinfo">
+  <div>
+    © {{ now.Year }}
+    {{- with .Site.Params.author }} {{ . }}{{- end }}.
+    {{- with .Site.Params.footer.license }} Licensed under {{ . | safeHTML }}.{{- end }}
+  </div>
+  {{- with .Site.Params.footer.links }}
+  <div class="footer-links">
+    {{- range . }}
+      <a href="{{ .url }}"{{ if strings.HasPrefix .url "http" }} target="_blank" rel="noopener"{{ end }}>{{ .name }}</a>
+    {{- end }}
+  </div>
+  {{- end }}
+</footer>

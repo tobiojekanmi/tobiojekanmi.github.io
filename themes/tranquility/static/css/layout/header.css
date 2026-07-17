@@ -1,0 +1,213 @@
+/* =========================================================
+   LAYOUT/HEADER.CSS — Top navigation header
+   ========================================================= */
+
+/* ── Site logo (always visible in header-left) ─────────── */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header-logo:hover {
+  color: var(--color-text);
+}
+
+.header-logo img {
+  height: 26px;
+  width: auto;
+}
+
+/* ── Desktop navigation ───────────────────────────────────── */
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+  .site-nav {
+    display: flex;
+  }
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all var(--ease-fast);
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-text);
+  background: var(--color-bg-muted);
+}
+
+/* ── Hamburger button — mobile only, toggles nav drawer ──── */
+#menu-toggle {
+  display: flex;
+  /* shown by default, JS hides on desktop */
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--ease-fast);
+  padding: 0;
+}
+
+#menu-toggle:hover {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+}
+
+/* Hide hamburger on tablet+ where site-nav is visible */
+@media (min-width: 768px) {
+  #menu-toggle {
+    display: none;
+  }
+}
+
+/* Hamburger icon bars */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 18px;
+  height: 18px;
+}
+
+.hamburger span {
+  display: block;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: all var(--ease-fast);
+}
+
+/* ── Dark mode toggle ─────────────────────────────────────── */
+#mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--ease-fast);
+  padding: 0;
+}
+
+#mode:hover {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+}
+
+#mode svg {
+  pointer-events: none;
+}
+
+/* Light/dark icon swap */
+.toggle-dark {
+  display: block;
+}
+
+.toggle-light {
+  display: none;
+}
+
+[data-dark-mode] .toggle-dark {
+  display: none;
+}
+
+[data-dark-mode] .toggle-light {
+  display: block;
+}
+
+/* ── Social icons ─────────────────────────────────────────── */
+.header-social {
+  display: none;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+@media (min-width: 640px) {
+  .header-social {
+    display: flex;
+  }
+}
+
+.header-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--ease-fast);
+}
+
+.header-social a:hover {
+  color: var(--color-text);
+  background: var(--color-bg-muted);
+}
+
+.header-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Mobile: theme toggle left of hamburger ─────────────── */
+@media (max-width: 767px) {
+  .header-right {
+    flex-direction: row;
+    gap: var(--sp-2);
+  }
+
+  /* Ensure mode toggle comes before menu-toggle visually on mobile */
+  #mode {
+    order: 1;
+  }
+
+  #menu-toggle {
+    order: 2;
+  }
+
+  .site-nav {
+    order: 0;
+  }
+}
+
+/* ── Remove social icons section entirely ───────────────── */
+.header-social {
+  display: none !important;
+}

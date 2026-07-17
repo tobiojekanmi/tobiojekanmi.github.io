@@ -1,0 +1,41 @@
+{{- /*
+  Alert shortcode — https://lotusdocs.dev/docs/shortcodes/alerts/
+
+  Usage:
+    {{% alert context="warning" title="Heads up" %}}Markdown **content**{{% /alert %}}
+    {{% alert context="info" %}}Simple note{{% /alert %}}
+    {{< alert context="danger" text="One-liner, no markdown parsing needed" >}}
+
+  Params:
+    context — note|default|info|primary|success|tip|warning|danger (default: "default")
+    title   — optional bold heading above the body
+    icon    — optional raw HTML/SVG to override the default Material Symbol
+    text    — optional single-line alternative to Inner content
+*/}}
+{{- $context := .Get "context" | default "default" }}
+{{- $title   := .Get "title" }}
+{{- $icons := dict
+    "default" "notifications"
+    "note"    "sticky_note_2"
+    "info"    "info"
+    "primary" "info"
+    "success" "check_circle"
+    "tip"     "check_circle"
+    "warning" "warning"
+    "danger"  "report"
+}}
+<div class="alert alert-{{ $context }}" role="alert">
+  <div class="alert-icon" aria-hidden="true">
+    {{- with .Get "icon" }}{{ . | safeHTML }}
+    {{- else }}<span class="material-icons">{{ index $icons $context | default "notifications" }}</span>
+    {{- end }}
+  </div>
+  <div class="alert-body">
+    {{- with $title }}<div class="alert-title">{{ . }}</div>{{- end }}
+    {{- with .Get "text" }}
+      <div>{{ . | $.Page.RenderString }}</div>
+    {{- else }}
+      <div>{{ .Inner | $.Page.RenderString }}</div>
+    {{- end }}
+  </div>
+</div>

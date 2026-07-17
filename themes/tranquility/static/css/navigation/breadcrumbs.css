@@ -1,0 +1,95 @@
+/* =========================================================
+   NAVIGATION/BREADCRUMBS.CSS — Breadcrumb nav component
+   ========================================================= */
+
+/* ── Breadcrumbs ─────────────────────────────────────────── */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0 0 var(--sp-6);
+  padding: 0;
+  font-size: var(--text-sm);
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs li+li::before {
+  content: "/";
+  margin: 0 var(--sp-2);
+  color: var(--color-text-faint);
+}
+
+.breadcrumbs a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-link);
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--color-text-faint);
+}
+
+/* ── Breadcrumb: improved visibility and styling ────────── */
+.breadcrumb-nav {
+  margin-bottom: var(--sp-6);
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-2) 0;
+  font-size: var(--text-sm);
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-faint);
+}
+
+.breadcrumbs li+li::before {
+  /* content: "›"; */
+  content: "/";
+  margin: 0 var(--sp-2);
+  color: var(--color-text-faint);
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+.breadcrumbs a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-sm);
+  padding: 1px 3px;
+  transition: color var(--ease-fast), background var(--ease-fast);
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-link);
+  background: var(--color-bg-muted);
+}
+
+.breadcrumbs a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}

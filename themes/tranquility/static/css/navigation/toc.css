@@ -1,0 +1,242 @@
+/* =========================================================
+   NAVIGATION/TOC.CSS — Table of contents (desktop + mobile)
+   ========================================================= */
+
+/* ── TOC shared styles (used by .docs-toc in ALL page types) ─
+ *
+ *  .content-toc   → blog / project / post / note (simple)
+ *  .book-toc-right → book single pages
+ *
+ *  Both are sticky columns of the same width. The .docs-toc
+ *  partial renders identically inside either container.
+ * ─────────────────────────────────────────────────────────── */
+
+/* Shared container behaviour — sticky, scrollable, hidden < 1200px */
+/* (Actual display/positioning is set in layout.css for .content-toc
+    and in pages.css for .book-toc-right; .docs-toc handles visual.) */
+
+.docs-toc {
+  /* No extra padding/border here — container handles spacing */
+}
+
+.toc-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-faint);
+  margin: 0 0 var(--sp-3);
+  padding: 0 var(--sp-2);
+}
+
+/* Hugo-generated TOC nav */
+#toc ul, #TableOfContents ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+#toc ul ul, #TableOfContents ul ul {
+  padding-left: var(--sp-4);
+  margin-top: var(--sp-1);
+}
+#toc li, #TableOfContents li { padding-bottom: 4px; }
+#toc a, #TableOfContents a {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: 2px var(--sp-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: all 100ms ease;
+}
+#toc a:hover, #TableOfContents a:hover {
+  background: var(--toc-hover-bg);
+  color: var(--color-text);
+}
+#toc a.active {
+  background: var(--toc-active-bg);
+  color: var(--toc-active-color) !important;
+  font-weight: var(--weight-medium);
+}
+
+/* ── Mobile TOC dropdown ─────────────────────────────────── */
+.toc-mobile-wrapper {
+  position: sticky;
+  top: calc(var(--header-height) + var(--sp-2));
+  z-index: 100;
+  margin-bottom: var(--sp-6);
+}
+.toc-mobile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--ease-fast);
+}
+.toc-mobile-btn::after {
+  content: "›";
+  font-size: 1.2em;
+  transition: transform var(--ease-fast);
+}
+.toc-mobile-btn.open::after { transform: rotate(90deg); }
+
+.toc-mobile-dropdown {
+  display: none;
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(100% + 2px);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  max-height: 40vh;
+  overflow-y: auto;
+  z-index: 101;
+  box-shadow: var(--shadow-md);
+}
+.toc-mobile-dropdown.open { display: block; }
+.toc-mobile-dropdown ul { list-style: none; padding: var(--sp-2) var(--sp-3); margin: 0; }
+.toc-mobile-dropdown li { padding: 2px 0; }
+.toc-mobile-dropdown ul ul { padding-left: var(--sp-4); }
+.toc-mobile-dropdown a {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: 3px var(--sp-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+.toc-mobile-dropdown a:hover { color: var(--color-link); background: var(--color-bg-muted); }
+/* Hide mobile TOC when desktop TOC is visible */
+@media (min-width: 1200px) { .toc-mobile-wrapper { display: none; } }
+
+/* =========================================================
+   PAGE GRID SUPPORT — nav-components for grid slots
+   ========================================================= */
+
+/* ── Breadcrumb sits inside .page-grid__center, inherits width ── */
+/* Override any legacy max-width constraints */
+.page-grid__center .breadcrumb-nav {
+  max-width: none;
+  margin-bottom: var(--sp-5);
+}
+
+/* ── Mobile on-this-page slot (single pages) ─────────────── */
+/* Shown at < 1200px, placed after post-header in center col */
+.page-grid__right-mobile-single .toc-mobile-wrapper {
+  position: static; /* don't stick inside center col */
+  margin-bottom: var(--sp-6);
+}
+
+/* ── Mobile listing sidebar slot ─────────────────────────── */
+.page-grid__right-mobile-listing .listing-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+}
+.page-grid__right-mobile-listing .listing-sidebar__block {
+  flex: 1 1 200px;
+}
+
+
+/* =========================================================
+   INLINE MOBILE TOC/CHAPTERS COLLAPSIBLE
+   Shared by post and book page types.
+   Visibility breakpoint is set per-grid-type in grid.css
+   (posts: <1200px, books: <992px).
+   ========================================================= */
+
+.book-mobile-inline {
+  display: none; /* shown by breakpoint rules in grid.css / book.css */
+  margin-bottom: var(--sp-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.book-mobile-inline__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--color-bg-subtle);
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  text-align: left;
+  transition: background 100ms ease, color 100ms ease;
+}
+.book-mobile-inline__toggle:hover {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+}
+.book-mobile-inline__toggle[aria-expanded="true"] {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Label grows to fill available space, chevron stays right */
+.book-mobile-inline__toggle span { flex: 1; }
+
+.book-mobile-inline__chevron {
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+.book-mobile-inline__toggle[aria-expanded="true"] .book-mobile-inline__chevron {
+  transform: rotate(180deg);
+}
+
+.book-mobile-inline__panel {
+  padding: var(--sp-3) var(--sp-4);
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background: var(--color-bg);
+}
+
+/* TOC link styles inside the inline panel */
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline ul ul {
+  padding-left: var(--sp-4);
+  margin-top: var(--sp-1);
+}
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline li { padding-bottom: 4px; }
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline a {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: 3px var(--sp-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 100ms ease;
+}
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline a:hover,
+.book-mobile-inline--toc .book-mobile-inline__panel #toc-inline a.active {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+}
+
+/* Chapters panel: sidebar nav without its own header/footer chrome */
+.book-mobile-inline--chapters .book-mobile-inline__panel {
+  padding: var(--sp-2) 0;
+}
+.book-mobile-inline--chapters .book-sidebar__header { display: none; }
+.book-mobile-inline--chapters .book-sidebar__footer { display: none; }
+.book-mobile-inline--chapters .book-sidebar__nav    { padding: 0; }

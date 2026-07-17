@@ -1,0 +1,49 @@
+{{- define "main" }}
+{{- /* Derive section reliably from taxonomy data plural ("blog/categories" → "blog") */}}
+{{- $taxPlural := .Data.Plural }}
+{{- $section   := index (split $taxPlural "/") 0 }}
+{{- if not $section }}{{- $section = .Section }}{{- end }}
+
+<div class="page-grid page-grid--listing">
+  <div class="page-grid__left" aria-hidden="true"></div>
+
+  <div class="page-grid__center">
+    {{- partial "breadcrumbs.html" . }}
+    <div class="listing-header">
+      <h1 class="listing-title">{{ $section | title }} — {{ .Title | title }}</h1>
+      {{- with .Description }}<p class="listing-desc">{{ . }}</p>{{- end }}
+    </div>
+
+    {{- partial "section/main/categories.html" (dict "section" $section "page" .) }}
+
+    <div class="section-list">
+      {{- range .Paginator.Pages }}
+        <article class="section-item">
+          <a href="{{ .Permalink }}" class="section-item__title">{{ .Title }}</a>
+          {{- with .Description }}<p class="section-item__desc">{{ . | truncate 160 }}</p>{{- end }}
+          <div class="section-item__meta section-item__meta--pipe">
+            {{- with .Date }}<span><time datetime="{{ . | time.Format "2006-01-02" }}">{{ . | time.Format "Jan 2, 2006" }}</time></span>{{- end }}
+            {{- with .ReadingTime }}<span>{{ . }} min read</span>{{- end }}
+            {{- $cats := index .Params (printf "%s/categories" $section) }}
+            {{- if not $cats }}{{- $cats = .Params.categories }}{{- end }}
+            {{- with $cats }}<span>{{ delimit . ", " }}</span>{{- end }}
+          </div>
+        </article>
+      {{- end }}
+    </div>
+
+    {{- $p := .Paginator }}
+    {{- if gt $p.TotalPages 1 }}
+    <nav class="pagination" aria-label="Page navigation">
+      {{- if $p.HasPrev }}<a href="{{ $p.Prev.URL }}" class="pagination-btn">← Previous</a>{{- else }}<span class="pagination-btn disabled">← Previous</span>{{- end }}
+      {{- range $p.Pagers }}<a href="{{ .URL }}" class="pagination-btn{{ if eq . $p }} active{{ end }}" aria-current="{{ if eq . $p }}page{{ end }}">{{ .PageNumber }}</a>{{- end }}
+      {{- if $p.HasNext }}<a href="{{ $p.Next.URL }}" class="pagination-btn">Next →</a>{{- else }}<span class="pagination-btn disabled">Next →</span>{{- end }}
+    </nav>
+    {{- end }}
+
+    {{- partial "section/main/tags.html" (dict "section" $section "page" .) }}
+  </div>
+
+  <div class="page-grid__right" aria-hidden="true"></div>
+</div>
+{{- end }}

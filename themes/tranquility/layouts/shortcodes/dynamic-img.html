@@ -1,0 +1,17 @@
+{{- /*
+  dynamic-img shortcode.
+  If params.cloudinary.cloudName is set in config.toml, images are served
+  through Cloudinary's on-the-fly resizing/optimization. Otherwise this
+  falls back to a plain lazy-loaded <img> pointing at the local/given src,
+  so the shortcode works out of the box without a Cloudinary account.
+*/}}
+{{- $image := .Get "src" }}
+{{- $alt := .Get "title" }}
+{{- $width := .Get "width" | default "w_auto" }}
+{{- $style := .Get "style" | default "max-width:80%" }}
+{{- $cloud := .Site.Params.cloudinary.cloudName }}
+{{- if $cloud }}
+<img alt="{{ $alt }}" title="{{ $alt }}" loading="lazy" data-src="https://res.cloudinary.com/{{ $cloud }}/{{ $width }},c_scale,f_auto,q_auto,dpr_auto{{ $image }}" class="cld-responsive" style="padding-bottom: 16px; display: block; margin: auto; {{ $style }}">
+{{- else }}
+<img alt="{{ $alt }}" title="{{ $alt }}" loading="lazy" src="{{ $image | relURL }}" style="display: block; margin: auto; {{ $style }}">
+{{- end }}

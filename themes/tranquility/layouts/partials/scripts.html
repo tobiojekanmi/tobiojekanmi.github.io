@@ -1,0 +1,326 @@
+{{- /* =========================================================
+   SCRIPTS.HTML — Unified JS (LotusDocs-inspired)
+   Covers: dark mode, sidebar, TOC scrollspy, code copy,
+           heading anchors, back-to-top, reading progress,
+           tabs shortcode, collapsibles
+   ========================================================= */}}
+<script>
+/* ── Dark Mode (LotusDocs darkmode-switch.js adapted) ──────── */
+(function() {
+  var btn = document.getElementById('mode');
+  if (!btn) return;
+
+  // Respond to OS scheme change
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (localStorage.getItem('theme')) return; // respect explicit choice
+    e.matches
+      ? document.documentElement.setAttribute('data-dark-mode', '')
+      : document.documentElement.removeAttribute('data-dark-mode');
+  });
+
+  // Toggle on click
+  btn.addEventListener('click', function() {
+    var isDark = document.documentElement.hasAttribute('data-dark-mode');
+    if (isDark) {
+      document.documentElement.removeAttribute('data-dark-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-dark-mode', '');
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+})();
+
+/* ── Mobile nav drawer toggle ────────────────────────────────── */
+(function() {
+  var toggle  = document.getElementById('menu-toggle');
+  var drawer  = document.getElementById('mobile-nav-drawer');
+  var overlay = document.getElementById('mobile-nav-overlay');
+  if (!toggle) return;
+
+  function openNav() {
+    if (drawer) { drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); }
+    if (overlay) overlay.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    if (drawer) { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
+    if (overlay) overlay.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', function() {
+    (drawer && drawer.classList.contains('open')) ? closeNav() : openNav();
+  });
+  if (overlay) overlay.addEventListener('click', closeNav);
+
+  // Hide hamburger on desktop
+  function syncHamburger() {
+    toggle.style.display = window.innerWidth >= 768 ? 'none' : '';
+  }
+  syncHamburger();
+  window.addEventListener('resize', syncHamburger);
+
+  // Close on nav link click
+  if (drawer) {
+    drawer.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', closeNav);
+    });
+  }
+})();
+
+/* ── TOC scrollspy (LotusDocs scrollspy-script.js adapted) ──── */
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a');
+  if (!tocLinks.length) return;
+
+  var headings = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      var el = document.querySelector(id);
+      if (el) headings.push({ link: link, el: el });
+    }
+  });
+
+  function updateTOC() {
+    var scrollY = window.scrollY + 120;
+    var active = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].el.offsetTop <= scrollY) active = headings[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (active) active.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', updateTOC, { passive: true });
+  updateTOC();
+})();
+
+/* ── Mobile TOC toggle ──────────────────────────────────────── */
+(function() {
+  var btn = document.getElementById('toc-mobile-btn');
+  var dropdown = document.getElementById('toc-mobile-dropdown');
+  if (!btn || !dropdown) return;
+  btn.addEventListener('click', function() {
+    var open = dropdown.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  });
+  // Close on link click
+  dropdown.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      dropdown.classList.remove('open');
+      btn.classList.remove('open');
+    });
+  });
+})();
+
+/* ── Code copy buttons (LotusDocs prism copy pattern) ────────── */
+(function() {
+  document.querySelectorAll('.prose pre').forEach(function(pre) {
+    // Wrap in a container
+    var wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    // Detect language from class
+    var code = pre.querySelector('code');
+    var lang = '';
+    if (code) {
+      var match = code.className.match(/language-(\S+)/);
+      lang = match ? match[1] : '';
+    }
+
+    // Build header
+    var header = document.createElement('div');
+    header.className = 'code-block-header';
+    header.innerHTML =
+      '<span class="code-block-lang">' + lang + '</span>' +
+      '<button class="code-copy-btn" aria-label="Copy code">Copy</button>';
+
+    wrapper.insertBefore(header, pre);
+
+    // Copy handler
+    header.querySelector('.code-copy-btn').addEventListener('click', function() {
+      var text = code ? code.innerText : pre.innerText;
+      var btn = this;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(function() {
+        // Fallback
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    });
+  });
+})();
+
+/* ── Heading anchors (LotusDocs render-heading.html adapted) ── */
+(function() {
+  document.querySelectorAll('.prose h2, .prose h3, .prose h4').forEach(function(h) {
+    if (!h.id) return;
+    var anchor = document.createElement('a');
+    anchor.href = '#' + h.id;
+    anchor.className = 'anchor';
+    anchor.setAttribute('aria-hidden', 'true');
+    anchor.setAttribute('tabindex', '-1');
+    anchor.innerHTML = '#';
+    h.appendChild(anchor);
+  });
+})();
+
+/* ── Back to top (LotusDocs topFunction) ────────────────────── */
+var _bttBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', function() {
+  if (!_bttBtn) return;
+  _bttBtn.classList.toggle('visible', window.scrollY > 500);
+}, { passive: true });
+function topFunction() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Reading progress bar ────────────────────────────────────── */
+(function() {
+  var bar = document.getElementById('reading-progress');
+  if (!bar) return;
+  window.addEventListener('scroll', function() {
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  }, { passive: true });
+})();
+
+/* ── Tabs shortcode ──────────────────────────────────────────── */
+(function() {
+  document.querySelectorAll('.tabs-wrapper').forEach(function(wrapper) {
+    var btns = wrapper.querySelectorAll('.tab-btn');
+    var panels = wrapper.querySelectorAll('.tab-panel');
+    btns.forEach(function(btn, i) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        if (panels[i]) panels[i].classList.add('active');
+      });
+    });
+  });
+})();
+
+/* ── Last modified relative time ─────────────────────────────── */
+(function() {
+  var el = document.getElementById('relativetime');
+  if (!el) return;
+  var date = new Date(el.getAttribute('data-date'));
+  if (isNaN(date)) return;
+  var diff = Date.now() - date.getTime();
+  var mins = Math.floor(diff / 60000);
+  var hours = Math.floor(mins / 60);
+  var days = Math.floor(hours / 24);
+  var months = Math.floor(days / 30);
+  var years = Math.floor(days / 365);
+  var text;
+  if (mins < 2) text = 'just now';
+  else if (mins < 60) text = mins + ' minutes ago';
+  else if (hours < 24) text = hours + ' hour' + (hours > 1 ? 's' : '') + ' ago';
+  else if (days < 30) text = days + ' day' + (days > 1 ? 's' : '') + ' ago';
+  else if (months < 12) text = months + ' month' + (months > 1 ? 's' : '') + ' ago';
+  else text = years + ' year' + (years > 1 ? 's' : '') + ' ago';
+  el.textContent = text;
+})();
+</script>
+
+<script>
+/* ── Inline mobile collapsible toggles — runs on ALL page types ── */
+(function() {
+  document.querySelectorAll('.book-mobile-inline__toggle').forEach(function(btn) {
+    var targetId = btn.getAttribute('data-target');
+    var panel    = document.getElementById(targetId);
+    if (!panel) return;
+    btn.addEventListener('click', function() {
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (isOpen) {
+        panel.setAttribute('hidden', '');
+      } else {
+        panel.removeAttribute('hidden');
+      }
+    });
+    /* Close panel when user clicks a nav link inside it */
+    panel.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        panel.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  });
+
+  /* ── TOC scrollspy — desktop (#toc) + inline mobile (#toc-inline) ── */
+  var tocLinks = document.querySelectorAll('#toc a, #toc-inline a');
+  if (tocLinks.length) {
+    var headings = [];
+    tocLinks.forEach(function(link) {
+      var id = link.getAttribute('href');
+      if (id && id.startsWith('#')) {
+        var el = document.querySelector(id);
+        if (el) headings.push({ link: link, el: el });
+      }
+    });
+    function updateTOC() {
+      var scrollY = window.scrollY + 120;
+      var active  = null;
+      for (var i = 0; i < headings.length; i++) {
+        if (headings[i].el.offsetTop <= scrollY) active = headings[i];
+      }
+      tocLinks.forEach(function(l) { l.classList.remove('active'); });
+      if (active) active.link.classList.add('active');
+    }
+    window.addEventListener('scroll', updateTOC, { passive: true });
+    updateTOC();
+  }
+})();
+
+/* ── Book-only: sidebar section toggles + active link scroll ── */
+(function() {
+  if (document.body.dataset.pageType !== 'book') return;
+
+  /* Collapsible section toggles in the desktop sidebar */
+  document.querySelectorAll('.book-nav__section-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var key     = btn.getAttribute('data-section');
+      var sublist = document.getElementById('section-' + key);
+      if (!sublist) return;
+      var isOpen = sublist.classList.contains('open');
+      sublist.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  /* Position the active chapter link in the sidebar on page load, so
+     navigating to a new chapter doesn't visually reset the sidebar to
+     its top. Alignment ("top" or "center") is set via
+     params.book.sidebarActivePosition in config.toml. */
+  var sidebar    = document.getElementById('book-sidebar');
+  var activeLink = sidebar && sidebar.querySelector('.book-nav__link.active, .book-nav__section-link.active');
+  if (activeLink && sidebar) {
+    var position = sidebar.dataset.activePosition === 'top' ? 'start' : 'center';
+    activeLink.scrollIntoView({ block: position, inline: 'nearest' });
+  }
+})();
+</script>

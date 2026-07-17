@@ -1,0 +1,81 @@
+/* =========================================================
+   COMPONENTS/ALERTS.CSS — Alert / callout blocks
+   Shortcode: {{% alert context="info|success|warning|danger|note" %}}
+   ========================================================= */
+
+.alert {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border: 1px solid var(--alert-border);
+  border-radius: var(--radius-md);
+  margin: var(--sp-6) 0;
+  font-size: var(--text-sm);
+}
+
+.alert p:last-child {
+  margin-bottom: 0;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+.alert-icon .material-icons {
+  font-size: 20px;
+  vertical-align: -4px;
+}
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title {
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--sp-1);
+  font-size: var(--text-sm);
+}
+
+.alert-note,
+.alert-default {
+  background: var(--alert-note-bg);
+}
+.alert-note .alert-icon,
+.alert-default .alert-icon {
+  color: var(--alert-note-icon);
+}
+
+.alert-info,
+.alert-primary {
+  background: var(--alert-info-bg);
+}
+.alert-info .alert-icon,
+.alert-primary .alert-icon {
+  color: var(--alert-info-icon);
+}
+
+.alert-success,
+.alert-tip {
+  background: var(--alert-success-bg);
+}
+.alert-success .alert-icon,
+.alert-tip .alert-icon {
+  color: var(--alert-success-icon);
+}
+
+.alert-warning {
+  background: var(--alert-warning-bg);
+}
+.alert-warning .alert-icon {
+  color: var(--alert-warning-icon);
+}
+
+.alert-danger {
+  background: var(--alert-danger-bg);
+}
+.alert-danger .alert-icon {
+  color: var(--alert-danger-icon);
+}

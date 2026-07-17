@@ -1,0 +1,185 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="{{ .Site.Params.favicon | default "/images/favicon.ico" }}" type="image/x-icon">
+
+{{- /* Dark mode init — must run before first paint to prevent flash */}}
+<script>
+(function(){
+  var local = localStorage.getItem('theme');
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (local === 'dark' || (!local && sysDark)) {
+    document.documentElement.setAttribute('data-dark-mode', '');
+  }
+})();
+</script>
+
+{{- /* Fonts — URL is configurable via params.theme.googleFontsURL; unset/empty uses the theme's Inter (UI) + Lora (serif accents) pairing. Set to "none" to disable Google Fonts entirely (e.g. when self-hosting fonts or using system fonts via params.theme.tokens). */}}
+{{- $fontsURL := .Site.Params.theme.googleFontsURL | default "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" }}
+{{- if ne $fontsURL "none" }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{ $fontsURL }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ $fontsURL }}"></noscript>
+{{- end }}
+
+<!-- SEO -->
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{ template "_internal/opengraph.html" . }}
+{{ template "_internal/twitter_cards.html" . }}
+{{ template "_internal/google_analytics.html" . }}
+
+<!-- Material Symbols (self-hosted) -->
+<link rel="preload" href="/fonts/material-symbols-outlined.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  src: url('/fonts/material-symbols-outlined.woff2') format('woff2'),
+       url('/fonts/material-symbols-outlined.woff') format('woff');
+  font-display: optional;
+}
+.material-icons {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+</style>
+
+<!-- CSS: Base -->
+<link rel="stylesheet" href="/css/base/tokens.css">
+{{- partial "theme-vars.html" . }}
+<link rel="stylesheet" href="/css/base/reset.css">
+
+<!-- CSS: Layout -->
+<link rel="stylesheet" href="/css/layout/grid.css">
+<link rel="stylesheet" href="/css/layout/header.css">
+<link rel="stylesheet" href="/css/layout/mobile.css">
+<link rel="stylesheet" href="/css/layout/utilities.css">
+
+<!-- CSS: Typography -->
+<link rel="stylesheet" href="/css/typography/prose.css">
+<link rel="stylesheet" href="/css/typography/code.css">
+
+<!-- CSS: Components -->
+<link rel="stylesheet" href="/css/components/buttons.css">
+<link rel="stylesheet" href="/css/components/badges.css">
+<link rel="stylesheet" href="/css/components/tags.css">
+<link rel="stylesheet" href="/css/components/cards.css">
+<link rel="stylesheet" href="/css/components/alerts.css">
+<link rel="stylesheet" href="/css/components/tabs.css">
+<link rel="stylesheet" href="/css/components/collapsibles.css">
+
+<!-- CSS: Navigation -->
+<link rel="stylesheet" href="/css/navigation/breadcrumbs.css">
+<link rel="stylesheet" href="/css/navigation/toc.css">
+<link rel="stylesheet" href="/css/navigation/listing-sidebar.css">
+<link rel="stylesheet" href="/css/navigation/pagination.css">
+<link rel="stylesheet" href="/css/navigation/social.css">
+<link rel="stylesheet" href="/css/navigation/footer.css">
+
+<!-- CSS: Pages -->
+<link rel="stylesheet" href="/css/pages/home.css">
+<link rel="stylesheet" href="/css/pages/listing.css">
+<link rel="stylesheet" href="/css/pages/post.css">
+<link rel="stylesheet" href="/css/pages/project.css">
+<link rel="stylesheet" href="/css/pages/taxonomy.css">
+{{- if eq .Section "notes" }}
+<link rel="stylesheet" href="/css/pages/book.css">
+{{- end }}
+
+<!-- CSS: Grid System -->
+<link rel="stylesheet" href="/css/grid/columns.css">
+
+{{- /* ── Code syntax highlighting — params.codeHighlight.library: "prism" (default, client-side, line-highlight/command-line plugins) or "chroma" (Hugo-native SSR, no JS). Only one is ever loaded. ── */}}
+{{- $codeLib := .Site.Params.codeHighlight.library | default "prism" | lower }}
+{{- if eq $codeLib "chroma" }}
+<link rel="stylesheet" href="/css/vendor/chroma.css">
+{{- else }}
+<link rel="stylesheet" href="/css/vendor/prism.css">
+<link rel="stylesheet" href="/js/vendor/prism/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="/js/vendor/prism/plugins/line-highlight/prism-line-highlight.min.css">
+<link rel="stylesheet" href="/js/vendor/prism/plugins/command-line/prism-command-line.min.css">
+{{- end }}
+
+{{- /* ── Math rendering ─────────────────────────────────── */}}
+{{- $mathEnabled := false }}
+{{- $renderer    := "" }}
+{{- with .Site.Params.math }}
+  {{- if .enable }}
+    {{- $mathEnabled = true }}
+    {{- $renderer = .renderer | default "katex" | lower }}
+  {{- end }}
+{{- end }}
+{{- /* Per-page override: front-matter math: true/false */}}
+{{- if isset .Params "math" }}
+  {{- $mathEnabled = .Params.math }}
+{{- end }}
+
+{{- if $mathEnabled }}
+
+  {{- if or (eq $renderer "katex") (eq $renderer "both") }}
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$',  right: '$$',  display: true},
+        {left: '\\\\[', right: '\\\\]', display: true},
+        {left: '$',   right: '$',   display: false},
+        {left: '\\\\(', right: '\\\\)', display: false}
+      ],
+      throwOnError: false
+    });">
+  </script>
+  {{- end }}
+
+  {{- if or (eq $renderer "mathjax") (eq $renderer "both") }}
+  <!-- MathJax -->
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath:  [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams'
+    },
+    options: {
+      skipHtmlTags: ['script','noscript','style','textarea','pre']
+    },
+    startup: {
+      pageReady() {
+        return MathJax.startup.defaultPageReady();
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" crossorigin="anonymous"></script>
+  {{- end }}
+
+{{- end }}
+
+{{- if eq $codeLib "prism" }}
+<!-- Prism.js — self-hosted core + curated languages + plugins (line-numbers, line-highlight, command-line) -->
+<script defer src="/js/vendor/prism/prism-core.min.js"></script>
+{{- range slice "clike" "markup" "css" "javascript" "typescript" "jsx" "tsx" "bash" "json" "json5" "yaml" "python" "go" "rust" "sql" "markdown" "docker" "diff" "git" "toml" "ini" "csharp" "java" "c" "cpp" "ruby" "markup-templating" "php" "css-extras" "http" }}
+<script defer src="/js/vendor/prism/components/prism-{{ . }}.min.js"></script>
+{{- end }}
+<script defer src="/js/vendor/prism/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script defer src="/js/vendor/prism/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script defer src="/js/vendor/prism/plugins/command-line/prism-command-line.min.js"></script>
+{{- end }}
+
+<!-- Title -->
+<title>{{- block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end -}}</title>

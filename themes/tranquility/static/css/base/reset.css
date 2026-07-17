@@ -1,0 +1,112 @@
+/* =========================================================
+   BASE/RESET.CSS — CSS reset + base element styles
+   ========================================================= */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 24px);
+  -webkit-text-size-adjust: 100%;
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color var(--ease-medium), color var(--ease-medium);
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  margin: 0 0 var(--sp-4);
+  line-height: 1.65;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--ease-fast);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+  margin: 0 0 var(--sp-4);
+}
+
+ul,
+ol {
+  padding-left: var(--sp-6);
+  margin: 0 0 var(--sp-4);
+}
+
+li {
+  line-height: var(--leading-relaxed);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-faint);
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}

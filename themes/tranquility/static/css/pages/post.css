@@ -1,0 +1,169 @@
+/* =========================================================
+   PAGES/POST.CSS — Blog/project post headers, footers, layout
+   Single source of truth for .post-header, .post-title,
+   .post-meta, .post-footer and their children.
+   ========================================================= */
+
+/* ── Post / content header ────────────────────────────────── */
+.post-header {
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-1);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-header__cats {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+}
+
+.post-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--sp-4);
+  color: var(--color-text);
+}
+
+@media (max-width: 640px) {
+  .post-title {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* Post metadata row */
+.post-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-4);
+}
+
+.post-meta__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.post-meta__item svg,
+.post-meta__icon {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.post-header__tags {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-top: var(--sp-2);
+}
+
+/* Featured image */
+.post-featured-img {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--sp-8);
+}
+
+.post-featured-img img {
+  width: 100%;
+  aspect-ratio: 21/9;
+  object-fit: cover;
+}
+
+/* ── Post footer (tags + social share) ───────────────────── */
+.post-footer {
+  margin-top: var(--sp-10);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.post-footer__tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.post-footer__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-faint);
+  margin-right: var(--sp-1);
+  white-space: nowrap;
+}
+
+/* ── Project action buttons ───────────────────────────────── */
+.project-action-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+/* =========================================================
+   PREV / NEXT NAVIGATION — shared by post and book types
+   .doc-nav is used by partials/page/footer/navigation.html
+   and partials/book/doc-nav.html
+   ========================================================= */
+
+.doc-hr {
+  margin: var(--sp-10) 0 var(--sp-6);
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.doc-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 600px) {
+  .doc-nav {
+    grid-template-columns: 1fr;
+  }
+  .doc-nav-card--next { text-align: left; }
+}
+
+.doc-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.doc-nav-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.doc-nav-card--next { text-align: right; }
+
+.doc-nav-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.doc-nav-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+[data-dark-mode] .doc-nav-card { background: var(--color-bg-subtle); }

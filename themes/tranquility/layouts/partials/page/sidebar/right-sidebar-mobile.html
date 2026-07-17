@@ -1,0 +1,11 @@
+{{- /* Mobile TOC dropdown — LotusDocs toc-mobile.html pattern */}}
+{{- if and (ne .Params.toc false) (ne .TableOfContents "<nav id=\"TableOfContents\"></nav>") }}
+<div class="toc-mobile-wrapper" aria-label="Page contents">
+  <button id="toc-mobile-btn" class="toc-mobile-btn" aria-expanded="false" aria-controls="toc-mobile-dropdown">
+    On this page
+  </button>
+  <div id="toc-mobile-dropdown" class="toc-mobile-dropdown">
+    {{- replaceRE `<ul>` `<ul class="toc-mobile-list">` .TableOfContents 1 | safeHTML }}
+  </div>
+</div>
+{{- end }}

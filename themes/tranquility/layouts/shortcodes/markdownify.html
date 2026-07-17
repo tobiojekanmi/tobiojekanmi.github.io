@@ -1,0 +1,10 @@
+{{- /*
+  Markdownify shortcode — https://lotusdocs.dev/docs/shortcodes/markdownify/
+  Renders the inner content as markdown. Useful inside data-driven templates
+  (e.g. range loops over front matter) where `.Inner` would otherwise be
+  passed through as plain text.
+
+  Usage:
+    {{% markdownify %}}Some **bold** text with a [link](/page/){{% /markdownify %}}
+*/}}
+{{- .Inner | .Page.RenderString -}}

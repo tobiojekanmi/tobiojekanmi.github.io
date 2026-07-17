@@ -1,0 +1,17 @@
+{{- /* Tabs shortcode — LotusDocs tabs.html adapted */}}
+<div class="tabs-wrapper">
+  <div class="tabs-nav" role="tablist">
+    {{- range $i, $tab := .Page.Scratch.Get "tabs" }}
+      <button class="tab-btn{{ if eq $i 0 }} active{{ end }}"
+              role="tab"
+              aria-selected="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+              aria-controls="tab-panel-{{ $tab.id }}">
+        {{ $tab.name }}
+      </button>
+    {{- end }}
+  </div>
+  <div class="tabs-content">
+    {{ .Inner }}
+  </div>
+</div>
+{{- .Page.Scratch.Delete "tabs" }}

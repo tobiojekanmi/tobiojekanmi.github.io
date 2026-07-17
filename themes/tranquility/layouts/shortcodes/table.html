@@ -1,0 +1,25 @@
+{{- /*
+  Table shortcode — https://lotusdocs.dev/docs/shortcodes/tables/
+
+  Wraps a markdown table with theme-styled classes and converts
+  legacy `align="..."` cell attributes (from some markdown renderers)
+  into inline `text-align` styles.
+
+  Usage:
+    {{% table %}}
+    | Name | Type   |
+    |------|--------|
+    | id   | string |
+    {{% /table %}}
+
+    {{% table "table-striped" %}}
+    ...
+    {{% /table %}}
+*/}}
+{{- $html := .Inner | .Page.RenderString }}
+{{- $class := .Get 0 }}
+{{- $html = replace $html "<table>" (printf "<table class=\"table%s\">" (cond (ne $class "") (printf " %s" $class) "")) }}
+{{- $html = replaceRE `align="([a-z]+)"` `style="text-align: $1"` $html }}
+<div class="table-wrapper">
+  {{ $html | safeHTML }}
+</div>

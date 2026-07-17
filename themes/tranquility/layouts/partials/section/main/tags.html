@@ -1,0 +1,36 @@
+{{- /*
+  listing/tags.html
+  ─────────────────
+  Tag bar below article lists.
+  Active tag (on a term page) gets .active class.
+*/}}
+{{- $page    := .page }}
+{{- $section := .section | default "" | lower }}
+{{- $showTags := true }}
+{{- if isset $page.Site.Params.listing "showTagBar" }}
+  {{- $showTags = $page.Site.Params.listing.showTagBar }}
+{{- end }}
+
+{{- if $showTags }}
+  {{- $tagKey := printf "%s/tags" $section }}
+  {{- $tags   := index $page.Site.Taxonomies $tagKey }}
+  {{- if not $tags }}{{- $tags = $page.Site.Taxonomies.tags }}{{- end }}
+
+  {{- if $tags }}
+  {{- $activeTag := "" }}
+  {{- if eq $page.Kind "term" }}
+    {{- $activeTag = $page.Title | lower }}
+  {{- end }}
+
+  <div class="tag-bar">
+    <span class="tag-bar__label">Tags</span>
+    {{- range $name, $pages := $tags }}
+      {{- $title := $pages.Page.Title }}
+      {{- $isActive := eq ($name | lower) $activeTag }}
+      <a href="{{ printf "/%s/tags/%s/" $section ($name | urlize) | relLangURL }}"
+        class="tag{{ if $isActive }} active{{ end }}"
+        aria-current="{{ if $isActive }}page{{ end }}">{{ $title }}</a>
+    {{- end }}  
+  </div>
+  {{- end }}
+{{- end }}

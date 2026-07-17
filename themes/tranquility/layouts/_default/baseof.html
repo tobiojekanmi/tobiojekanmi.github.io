@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}"{{ if .Site.Params.theme.defaultDark }} data-dark-mode{{ end }}>
+
+<head>
+  {{- partial "head.html" . -}}
+  {{- if eq .Type "book" }}<link rel="stylesheet" href="/css/pages/book.css">{{- end }}
+  {{- block "head" . }}{{- end }}
+</head>
+
+<body data-page-type="{{ .Type }}">
+
+  <!-- Reading progress bar -->
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  {{- partial "header.html" . -}}
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      {{- range .Site.Menus.main }}
+        {{- if not .HasChildren }}
+          <a href="{{ .URL }}" class="mobile-nav-link"
+             {{ if (strings.HasPrefix .URL "http") }}target="_blank" rel="noopener"{{ end }}>
+            {{ .Name }}
+          </a>
+        {{- end }}
+      {{- end }}
+    </nav>
+  </div>
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true"></div>
+
+  <main id="main-content" role="main" tabindex="-1">
+    <div class="layout-spacing">
+      {{- block "main" . }}{{- end }}
+    </div>
+  </main>
+
+  {{- partial "footer.html" . -}}
+
+  <!-- Back to top -->
+  <button onclick="topFunction()" id="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 10.224l-6.3 6.3L4.32 15.152 12 7.472l7.68 7.68-1.38 1.376z" fill="currentColor"/>
+    </svg>
+  </button>
+
+  {{- partial "scripts.html" . -}}
+
+</body>
+</html>

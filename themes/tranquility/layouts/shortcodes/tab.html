@@ -1,0 +1,9 @@
+{{- /* Tab panel — LotusDocs tab.html adapted */}}
+{{- $name := .Get "name" | default (.Get 0) }}
+{{- $id := delimit (shuffle (slice "a" "b" "c" "d" "e" "f" "1" "2" "3")) "" }}
+{{- .Parent.Page.Scratch.Add "tabs" (slice (dict "name" $name "id" $id)) }}
+<div class="tab-panel{{ if eq .Ordinal 0 }} active{{ end }}"
+     id="tab-panel-{{ $id }}"
+     role="tabpanel">
+  {{ .Inner | markdownify }}
+</div>

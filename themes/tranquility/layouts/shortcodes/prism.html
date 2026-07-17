@@ -1,0 +1,42 @@
+{{- /*
+  Prism shortcode — https://lotusdocs.dev/docs/shortcodes/prism/
+  Only produces highlighted output when params.codeHighlight.library = "prism"
+  (the theme default). With "chroma" selected, use plain ``` fenced code
+  blocks instead — Hugo highlights those server-side.
+
+  Usage:
+    {{< prism lang="go" line-numbers="true" line="2-3" >}}
+    package main
+    {{< /prism >}}
+
+    {{< prism lang="bash" command-line="true" user="root" host="localhost" >}}
+    npm install
+    {{< /prism >}}
+
+  Named params: lang, id, line-numbers, linkable-line-numbers, line,
+  line-offset, start, command-line, user, host, prompt, output.
+*/}}
+{{- $inner := replaceRE "^\r?\n" "" .Inner | string }}
+{{- $innerFlat := replaceRE "\r\n?|\n" "" .Inner | string }}
+{{- $hash := substr (sha1 (delimit (slice $innerFlat .Ordinal "prism") "")) 0 7 }}
+{{- if eq (len .Params) 0 }}
+<pre id="{{ $hash }}"><code>{{ $inner }}</code></pre>
+{{- else }}
+<div class="prism-shortcode{{ if .Get "line" }} data-line{{ end }}">
+  <pre
+    {{- with .Get "id" }} id="{{ . }}"{{ else }} id="{{ $hash }}"{{ end }}
+    class="
+      {{- with .Get "lang" }}language-{{ . }}{{ end }}
+      {{- if .Get "line-numbers" }} line-numbers{{ end }}
+      {{- if .Get "linkable-line-numbers" }} linkable-line-numbers{{ end }}
+      {{- if .Get "command-line" }} command-line{{ end }}"
+    {{- with .Get "line" }} data-line="{{ . }}"{{ end }}
+    {{- with .Get "line-offset" }} data-line-offset="{{ . }}"{{ end }}
+    {{- with .Get "start" }} data-start="{{ . }}"{{ end }}
+    {{- with .Get "user" }} data-user="{{ . }}"{{ end }}
+    {{- with .Get "host" }} data-host="{{ . }}"{{ end }}
+    {{- with .Get "prompt" }} data-prompt="{{ . }}"{{ end }}
+    {{- with .Get "output" }} data-output="{{ . }}"{{ end }}
+  ><code{{ with .Get "lang" }} class="language-{{ . }}"{{ end }}>{{ $inner }}</code></pre>
+</div>
+{{- end }}

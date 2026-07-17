@@ -1,0 +1,104 @@
+{{- /*
+  partials/book/page-content.html — Shared rendering for all single-style book pages.
+
+  Used by:
+    layouts/book/single.html           — individual leaf chapter pages
+    layouts/book/list.html (Context 3) — chapter-directory index pages (_index.md)
+
+  Renders the full 3-col book grid: sidebar | prose | TOC.
+*/}}
+{{- $hasTOC := and (ne .Params.toc false) (ne .TableOfContents "<nav id=\"TableOfContents\"></nav>") }}
+
+<div class="page-grid page-grid--book">
+
+  {{- /* ── Desktop left: book sidebar ── */}}
+  <aside class="page-grid__left page-grid__left--book" id="book-sidebar"
+         data-active-position="{{ .Site.Params.book.sidebarActivePosition | default "center" }}"
+         aria-label="Book navigation">
+    {{- partial "book/sidebar.html" . -}}
+  </aside>
+
+  {{- /* ── Center: content ── */}}
+  <div class="page-grid__center">
+
+    {{- if .Site.Params.book.breadcrumbs | default true }}
+      {{- partial "breadcrumbs.html" . }}
+    {{- end }}
+
+    {{- /* Mobile: inline chapter list (hidden ≥992px) */}}
+    <div class="book-mobile-inline book-mobile-inline--chapters">
+      <button class="book-mobile-inline__toggle" aria-expanded="false"
+              data-target="book-mobile-chapters">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+        <span>Chapters</span>
+        <svg class="book-mobile-inline__chevron" width="14" height="14" viewBox="0 0 24 24"
+             fill="currentColor" aria-hidden="true">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+        </svg>
+      </button>
+      <div class="book-mobile-inline__panel" id="book-mobile-chapters" hidden>
+        {{- partial "book/sidebar.html" . -}}
+      </div>
+    </div>
+
+    <header class="post-header book-page-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{- with .Description }}<p class="lead">{{ . | markdownify }}</p>{{- end }}
+    </header>
+
+    {{- /* Mobile: inline TOC (hidden ≥992px) */}}
+    {{- if $hasTOC }}
+    <div class="book-mobile-inline book-mobile-inline--toc">
+      <button class="book-mobile-inline__toggle" aria-expanded="false"
+              data-target="book-mobile-toc">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" aria-hidden="true">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <span>On this page</span>
+        <svg class="book-mobile-inline__chevron" width="14" height="14" viewBox="0 0 24 24"
+             fill="currentColor" aria-hidden="true">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+        </svg>
+      </button>
+      <div class="book-mobile-inline__panel" id="book-mobile-toc" hidden>
+        {{- .TableOfContents | replaceRE `<nav id="TableOfContents">` `<nav id="toc-inline">` | safeHTML }}
+      </div>
+    </div>
+    {{- end }}
+
+    <div class="prose" id="content">{{ .Content }}</div>
+
+    {{- /* Resolve tags: prefer namespaced key (e.g. notes/tags) */}}
+    {{- $tags := index .Params "notes/tags" }}
+    {{- if not $tags }}{{- $tags = .Params.tags }}{{- end }}
+    {{- with $tags }}
+      <div class="post-footer__tags">
+        <span class="post-footer__label">Tags</span>
+        {{- range . }}
+          <a href="{{ printf "/notes/tags/%s/" (. | urlize) | relLangURL }}" class="tag">{{ . }}</a>
+        {{- end }}
+      </div>
+    {{- end }}
+
+    {{- if .Site.Params.book.docNav | default true }}
+      {{- partial "book/doc-nav.html" . }}
+    {{- end }}
+
+  </div>
+
+  {{- /* ── Desktop right: sticky TOC ── */}}
+  {{- if $hasTOC }}
+    <div class="page-grid__right page-grid__right--sticky">
+      {{- partial "page/sidebar/right-sidebar.html" . }}
+    </div>
+  {{- else }}
+    <div class="page-grid__right" aria-hidden="true"></div>
+  {{- end }}
+
+</div>

@@ -1,0 +1,65 @@
+{{- /*
+  partials/book/doc-nav.html — Previous / Next navigation within a book.
+
+  Builds a flat ordered list of ALL navigable pages (both regular pages and
+  section _index.md chapter pages) using the recursive build-flat-list partial,
+  then finds the previous and next neighbours of the current page.
+
+  Linear order: chapter/ → chapter/sub-1 → chapter/sub-2 → next-chapter/ → ...
+*/}}
+{{- $currentPage := . }}
+
+{{- /* ── Locate root book section ───────────────────────── */}}
+{{- $book := . }}
+{{- $notesSection := site.GetPage "/notes" }}
+{{- if $notesSection }}
+  {{- range $notesSection.Sections }}
+    {{- if in $currentPage.RelPermalink .RelPermalink }}
+      {{- $book = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* ── Build flat ordered page list ─────────────────── */}}
+{{- .Scratch.Set "flatPages" slice }}
+{{- partial "book/build-flat-list.html" (dict "section" $book "scratch" .Scratch "isRoot" true) }}
+{{- $pages := .Scratch.Get "flatPages" }}
+
+{{- /* ── Find prev / next ─────────────────────────────── */}}
+{{- $prev := false }}
+{{- $next := false }}
+{{- range $i, $p := $pages }}
+  {{- if eq $p.RelPermalink $currentPage.RelPermalink }}
+    {{- if gt $i 0 }}
+      {{- $prev = index $pages (sub $i 1) }}
+    {{- end }}
+    {{- if lt $i (sub (len $pages) 1) }}
+      {{- $next = index $pages (add $i 1) }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- if or $prev $next }}
+<hr class="doc-hr">
+<nav id="doc-nav" class="doc-nav" aria-label="Page navigation">
+
+  {{- if $prev }}
+    <a href="{{ $prev.RelPermalink }}" class="doc-nav-card doc-nav-card--prev">
+      <div class="doc-nav-label">← Previous</div>
+      <div class="doc-nav-title">{{ $prev.Title }}</div>
+    </a>
+  {{- else }}
+    <div></div>
+  {{- end }}
+
+  {{- if $next }}
+    <a href="{{ $next.RelPermalink }}" class="doc-nav-card doc-nav-card--next">
+      <div class="doc-nav-label">Next →</div>
+      <div class="doc-nav-title">{{ $next.Title }}</div>
+    </a>
+  {{- else }}
+    <div></div>
+  {{- end }}
+
+</nav>
+{{- end }}

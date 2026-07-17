@@ -1,0 +1,8 @@
+{{- /*
+  layouts/book/single.html — Individual leaf chapter/page within a book.
+  Delegates all rendering to the shared page-content partial so that
+  chapter _index.md pages (handled by list.html Context 3) look identical.
+*/}}
+{{- define "main" }}
+  {{- partial "book/page-content.html" . }}
+{{- end }}

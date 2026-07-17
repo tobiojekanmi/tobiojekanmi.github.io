@@ -1,0 +1,41 @@
+{{- /*
+  partials/theme-vars.html — Config-driven design token overrides.
+
+  Any CSS custom property defined in css/base/tokens.css can be overridden
+  from config.toml without touching theme CSS. Two tables are supported:
+
+    [params.theme.tokens]      — overrides applied to :root (light mode
+                                  and dark-mode-inherited values)
+    [params.theme.darkTokens]  — overrides applied only under
+                                  [data-dark-mode] (dark mode)
+
+  Example:
+    [params.theme.tokens]
+      primary   = "#7c3aed"
+      font-sans = "'Sora', sans-serif"
+    [params.theme.darkTokens]
+      primary = "#a78bfa"
+
+  This partial is included in head.html *after* tokens.css so the
+  cascade favors these values.
+*/}}
+{{- $tokens := .Site.Params.theme.tokens }}
+{{- $darkTokens := .Site.Params.theme.darkTokens }}
+{{- if or $tokens $darkTokens }}
+<style id="theme-token-overrides">
+{{- with $tokens }}
+:root{
+{{- range $k, $v := . }}
+  --{{ $k }}: {{ $v }};
+{{- end }}
+}
+{{- end }}
+{{- with $darkTokens }}
+[data-dark-mode]{
+{{- range $k, $v := . }}
+  --{{ $k }}: {{ $v }};
+{{- end }}
+}
+{{- end }}
+</style>
+{{- end }}

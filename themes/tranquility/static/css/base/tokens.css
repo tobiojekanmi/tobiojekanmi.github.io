@@ -1,0 +1,216 @@
+/* =========================================================
+   BASE/TOKENS.CSS — Design tokens: CSS variables + dark mode
+   ========================================================= */
+
+:root {
+  /* Blue scale (LotusDocs) */
+  --blue-50: hsl(198, 100%, 97%);
+  --blue-100: hsl(207, 100%, 88%);
+  --blue-200: hsl(212, 100%, 79%);
+  --blue-300: hsl(217, 88%, 69%);
+  --blue-400: hsl(221, 77%, 60%);
+  --blue-500: hsl(226, 66%, 51%);
+  --blue-600: hsl(231, 66%, 45%);
+  --blue-700: hsl(235, 68%, 38%);
+  --blue-800: hsl(239, 70%, 32%);
+  --blue-900: hsl(243, 72%, 25%);
+  /* Emerald scale */
+  --emerald-50: hsl(145, 100%, 94%);
+  --emerald-100: hsl(149, 89%, 82%);
+  --emerald-200: hsl(154, 77%, 68%);
+  --emerald-300: hsl(158, 66%, 53%);
+  --emerald-500: hsl(161, 87%, 34%);
+  --emerald-700: hsl(163, 93%, 23%);
+  --emerald-800: hsl(164, 96%, 18%);
+  /* Cardinal / red scale */
+  --cardinal-50: hsl(338, 100%, 96%);
+  --cardinal-100: hsl(340, 100%, 83%);
+  --cardinal-200: hsl(343, 100%, 75%);
+  --cardinal-300: hsl(347, 100%, 68%);
+  --cardinal-500: hsl(351, 67%, 52%);
+  --cardinal-800: hsl(353, 67%, 29%);
+  /* Yellow scale */
+  --yellow-50: hsl(55, 100%, 93%);
+  --yellow-100: hsl(54, 100%, 81%);
+  --yellow-200: hsl(54, 100%, 72%);
+  --yellow-300: hsl(51, 98%, 65%);
+  --yellow-500: hsl(48, 55%, 49%);
+  --yellow-800: hsl(45, 59%, 25%);
+  /* Grays */
+  --gray-50: #f7fafc;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* Primary */
+  --primary: var(--blue-500);
+  --primary-200: var(--blue-200);
+  --primary-300: var(--blue-300);
+  --primary-800: var(--blue-800);
+
+  /* Surface */
+  --color-bg: var(--white);
+  --color-bg-subtle: var(--gray-50);
+  --color-bg-muted: var(--gray-100);
+  --color-border: var(--gray-200);
+  --color-text: #3C4257;
+  --color-text-muted: var(--gray-700);
+  --color-text-faint: var(--gray-600);
+  --color-link: var(--primary);
+  --color-link-hover: var(--primary-800);
+
+  /* Sidebar */
+  --sidebar-bg: var(--white);
+  --sidebar-border: var(--gray-200);
+  --sidebar-text: #606770;
+  --sidebar-hover-bg: #eff1f4;
+  --sidebar-active-bg: #f5f6f8;
+  --sidebar-active-text: var(--primary);
+  --sidebar-active-border: var(--primary);
+  --sidebar-scrollbar: var(--gray-200);
+  --topbar-bg: hsla(255, 100%, 100%, 0.85);
+
+  /* TOC */
+  --toc-active-bg: var(--primary);
+  --toc-active-color: var(--white);
+  --toc-hover-bg: var(--gray-200);
+
+  /* Alerts */
+  --alert-border: var(--gray-200);
+  --alert-info-bg: hsl(204, 45%, 98%);
+  --alert-info-icon: var(--blue-500);
+  --alert-success-bg: hsl(145, 100%, 94%);
+  --alert-success-icon: var(--emerald-500);
+  --alert-warning-bg: hsl(55, 100%, 93%);
+  --alert-warning-icon: var(--yellow-500);
+  --alert-danger-bg: hsl(338, 100%, 96%);
+  --alert-danger-icon: var(--cardinal-500);
+  --alert-note-bg: var(--gray-50);
+  --alert-note-icon: var(--gray-500);
+
+  /* Code */
+  --code-block-bg: #1e2030;
+  --inline-code-bg: var(--gray-100);
+  --inline-code-border: 1px solid var(--gray-300);
+
+  /* Cards */
+  --card-bg: var(--white);
+  --card-border: var(--gray-300);
+  --card-border-hover: var(--primary);
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Lora", Georgia, "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Spacing */
+  --sp-1: .25rem;
+  --sp-2: .5rem;
+  --sp-3: .75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-7: 1.75rem;
+  --sp-8: 2rem;
+  --sp-9: 2.25rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+
+  /* Radii */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .07);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .10);
+  --shadow-lg: 0 10px 28px rgba(0, 0, 0, .12);
+
+  /* Transitions */
+  --ease-fast: 150ms ease;
+  --ease-medium: 250ms ease;
+  --ease-slow: 400ms ease;
+
+  /* Layout */
+  --header-height: 72px;
+  --sidebar-width: 250px;
+  --toc-width: 250px;
+  --page-max: 1320px;
+  --content-max: 780px;
+}
+
+/* Dark mode — [data-dark-mode] on <html> (LotusDocs pattern) */
+[data-dark-mode] {
+  --color-bg: #181921;
+  --color-bg-subtle: #1e2030;
+  --color-bg-muted: #262838;
+  --color-border: #2d3348;
+  --color-text: #dee2e6;
+  --color-text-muted: #b6b9be;
+  --color-text-faint: #6c757d;
+  --color-link: var(--blue-300);
+  --color-link-hover: var(--blue-200);
+
+  --sidebar-bg: #181921;
+  --sidebar-border: #2d3348;
+  --sidebar-text: #b6bbc9;
+  --sidebar-hover-bg: #2b303b;
+  --sidebar-active-bg: #2b303b;
+  --sidebar-active-text: var(--blue-300);
+  --sidebar-active-border: var(--blue-400);
+  --sidebar-scrollbar: var(--gray-700);
+  --topbar-bg: hsla(233, 16%, 11%, 0.88);
+
+  --toc-hover-bg: var(--gray-700);
+
+  --alert-border: #2d3348;
+  --alert-info-bg: hsla(226, 66%, 51%, 0.12);
+  --alert-info-icon: var(--blue-300);
+  --alert-success-bg: hsla(161, 87%, 34%, 0.12);
+  --alert-success-icon: var(--emerald-300);
+  --alert-warning-bg: hsla(48, 55%, 49%, 0.12);
+  --alert-warning-icon: var(--yellow-300);
+  --alert-danger-bg: hsla(351, 67%, 52%, 0.12);
+  --alert-danger-icon: var(--cardinal-300);
+  --alert-note-bg: hsla(0, 0%, 100%, 0.03);
+  --alert-note-icon: var(--gray-500);
+
+  --code-block-bg: #0d1117;
+  --inline-code-bg: #1e2433;
+  --inline-code-border: 1px solid #2d3348;
+
+  --card-bg: #1e2030;
+  --card-border: #2d3348;
+  --card-border-hover: var(--blue-400);
+}

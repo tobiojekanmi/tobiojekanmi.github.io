@@ -1,0 +1,111 @@
+{{- /*
+  listing/list-layout.html — Shared listing layout
+
+  Call with:
+    (dict
+      "type"           "page"
+      "section"        "blog|projects"
+      "page"           .
+      "paginatorPages" .Paginator.Pages
+      "paginator"      .Paginator)
+*/ -}}
+{{- $section   := .section | default "" }}
+{{- $page      := .page }}
+{{- $pages     := .paginatorPages }}
+{{- $paginator := .paginator }}
+
+{{- partial "breadcrumbs.html" $page }}
+
+<div class="listing-header">
+  <h1 class="listing-title">{{ $page.Title }}</h1>
+  {{- with $page.Description }}<p class="listing-desc">{{ . }}</p>{{- end }}
+</div>
+
+{{- /* Category bar */}}
+{{- partial "section/main/categories.html" (dict "section" $section "page" $page) }}
+
+{{- with $page.Content }}<div class="prose listing-content">{{ . }}</div>{{- end }}
+
+<div class="section-list">
+
+  {{- range $pages }}
+  <article class="section-item">
+    {{- with .Params.image }}
+      <div class="section-item__thumb">
+        <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
+      </div>
+    {{- end }}
+
+    <a href="{{ .Permalink }}" class="section-item__title">{{ .Title }}</a>
+
+    {{- with .Description }}
+      <p class="section-item__desc">{{ . | truncate 180 }}</p>
+    {{- end }}
+
+    <div class="section-item__meta">
+      {{- with .Date }}
+      <span class="meta-item">
+        <svg class="meta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <time datetime="{{ . | time.Format "2006-01-02" }}">{{ . | time.Format "Jan 2, 2006" }}</time>
+      </span>
+      {{- end }}
+
+      {{- with .ReadingTime }}
+      <span class="meta-item">
+        <svg class="meta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        {{ . }} min read
+      </span>
+      {{- end }}
+
+      {{- /* Resolve categories: prefer namespaced key (e.g. blog/categories) */}}
+      {{- $cats := index .Params (printf "%s/categories" $section) }}
+      {{- if not $cats }}{{- $cats = .Params.categories }}{{- end }}
+      {{- with $cats }}
+      <span class="meta-item meta-item--categories">
+        <svg class="meta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M20 13V7a2 2 0 0 0-2-2h-6l-2-2H6a2 2 0 0 0-2 2v6"/>
+          <path d="M4 13h16v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+        </svg>
+        {{- range $i, $cat := . }}
+          <a href="{{ printf "/%s/categories/%s/" $section ($cat | urlize) | relLangURL }}"
+              class="category-pill category-pill--inline">{{ $cat }}</a>
+        {{- end }}
+      </span>
+      {{- end }}
+    </div>
+  </article>
+  {{- end }}
+
+</div>
+
+{{- if gt $paginator.TotalPages 1 }}
+<nav class="pagination" aria-label="Page navigation">
+  {{- if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" class="pagination-btn">← Previous</a>
+  {{- else }}
+    <span class="pagination-btn disabled">← Previous</span>
+  {{- end }}
+  {{- range $paginator.Pagers }}
+    <a href="{{ .URL }}" class="pagination-btn{{ if eq . $paginator }} active{{ end }}"
+       aria-current="{{ if eq . $paginator }}page{{ end }}">{{ .PageNumber }}</a>
+  {{- end }}
+  {{- if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" class="pagination-btn">Next →</a>
+  {{- else }}
+    <span class="pagination-btn disabled">Next →</span>
+  {{- end }}
+</nav>
+{{- end }}
+
+{{- partial "section/main/tags.html" (dict "section" $section "page" $page) }}
