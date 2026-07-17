@@ -2,7 +2,7 @@ baseURL: "https://tobiojekanmi.github.io"
 languageCode: "en-us"
 title: "Oluwatobi's Blog"
 enableRobotsTXT: true
-theme: "zoe"
+theme: "tranquility"
 
 pagination:
   pagerSize: 10
@@ -25,61 +25,6 @@ menus:
       name: "About"
       url: "/about"
       weight: 4
-
-params:
-  title: "Oluwatobi's Blog"
-  description: "Artificial Intelligence & Software Engineering"
-  favicon: "/images/favicon.ico"
-  enableReadingTime: true
-  logo:
-    img: "/images/favicon.ico"
-    text: "Oluwatobi's Blog"
-
-  # Math rendering
-  math:
-    enable: true
-    # "katex" | "mathjax" | "both"
-    renderer: "both"
-
-  # Navigation and Homepage Section visibility
-  sections:
-    enableBlog: true
-    enableProjects: true
-    enableNotes: true
-
-  # Book / docs settings
-  book:
-    # Show breadcrumbs in book pages
-    breadcrumbs: true
-    # Show prev/next navigation at bottom of each book page
-    docNav: true
-    # Show sidebar section icons (requires icon: front-matter param)
-    sidebarIcons: false
-
-  # Homepage settings
-  home:
-    recentBlogs: 5
-    recentProjects: 5
-    recentNotes: 3
-
-  # Listing page settings
-  listing:
-    # Show category pill buttons above article list
-    showCategoryBar: true
-    # Show tag pills below article list + pagination
-    showTagBar: false
-
-  author: "Oluwatobi Ojekanmi"
-  avatar: "images/avatar.png"
-  role: "AI & Software Engineer"
-  bio: |
-    Hi ✋, I'm Oluwatobi. Welcome to my digital notebook, where I share my thoughts, what I’m learning, what I know, and the things I’m building along the way.
-
-  social:
-    github: "tobiojekanmi"
-    twitter: "tobiojekanmi"
-    linkedin: "tobiojekanmi"
-    email: "oluwatobi.ojekanmi@gmail.com"
 
 taxonomies:
   "blog/tag": "blog/tags"
@@ -111,6 +56,10 @@ markup:
     style: dracula
     lineNos: false
     noClasses: false
+    codeFences: false          # required when using Prism (see params.codeHighlight)
+  tableOfContents:             
+    startLevel: 2
+    endLevel: 3
 
 outputs:
   home: ["HTML", "RSS", "JSON"]
@@ -118,3 +67,69 @@ outputs:
   taxonomy: ["HTML", "RSS"]
   term: ["HTML", "RSS"]
   page: ["HTML", "RSS"]
+
+params:
+  title: "Oluwatobi's Blog"
+  description: "Artificial Intelligence & Software Engineering"
+  favicon: "/images/favicon.ico"
+  enableReadingTime: true
+  logo:
+    img: "/images/favicon.ico"
+    text: "Oluwatobi's Blog"
+
+  # Math rendering
+  math:
+    enable: true
+    renderer: "mathjax"           # "katex" | "mathjax" | "both"
+
+  # Navigation and Homepage Section visibility
+  sections:
+    enableBlog: true
+    enableProjects: true
+    enableNotes: true
+
+  # Book / docs settings
+  book:
+    breadcrumbs: true
+    docNav: true
+    sidebarIcons: false
+
+  # Homepage settings
+  home:
+    recentBlogs: 5
+    recentProjects: 5
+    recentNotes: 5
+
+  # Listing page settings
+  listing:
+    showCategoryBar: true
+    showTagBar: false
+
+  author: "Oluwatobi Ojekanmi"
+  avatar: "images/avatar.png"
+  # role: "AI & Software Engineer"
+  bio: |
+    Hi ✋, I'm Oluwatobi. I build intelligent systems that bridge the digital and physical worlds. Here, I document my explorations in robotics, artificial intelligence, and the future of autonomous systems.
+
+  social:
+    github: "tobiojekanmi"
+    twitter: "tobiojekanmi"
+    linkedin: "tobiojekanmi"
+    email: "oluwatobi.ojekanmi@gmail.com"
+
+  codeHighlight:
+    library: "prism"           # "prism" | "chroma" – must match markup.highlight.codeFences
+
+  cloudinary:
+    cloudName: ""              # leave empty to use local <img> fallback
+
+  theme:
+    defaultDark: false
+    googleFontsURL: ""         # "" = theme default (Inter + Lora), "none" = disable
+    tokens:                    # override CSS custom properties; defaults shown commented
+      # primary: "hsl(226, 66%, 51%)"
+      # font-sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      # font-serif: "'Lora', Georgia, 'Times New Roman', serif"
+      # radius-lg: "0.5rem"
+    darkTokens:                # overrides for dark mode
+      # primary: "hsl(221, 77%, 60%)"
